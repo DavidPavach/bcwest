@@ -1,0 +1,398 @@
+@import 'tailwindcss';
+@import "@fontsource/inter";
+@import "@fontsource/barlow-condensed";
+@import "@fontsource/jetbrains-mono";
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+.hide-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: oklch(0.15 0.03 255);
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.80 0.18 185);
+  border-radius: 3px;
+}
+
+@theme {
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1400px;
+}
+
+
+:root {
+
+  --radius: 0.25rem;
+
+  /* BCWEST Brand Colors - Light Mode */
+  --background: hsl(40 20% 96%);
+  /* Ivory #F6F4EF */
+  --foreground: hsl(228 56% 13%);
+  /* Deep Ocean #0A1034 */
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(228 56% 13%);
+
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(228 56% 13%);
+
+  --primary: hsl(228 56% 13%);
+  /* Deep Ocean #0A1034 */
+  --primary-foreground: hsl(40 20% 96%);
+
+  --secondary: hsl(207 22% 36%);
+  /* Steel Blue #415468 */
+  --secondary-foreground: hsl(40 20% 96%);
+
+  --muted: hsl(280 14% 84%);
+  /* Fog #D7D0E2 */
+  --muted-foreground: hsl(210 14% 16%);
+  /* Graphite #222831 */
+
+  --accent: hsl(37 46% 51%);
+  /* Heritage Gold #B9924C */
+  --accent-foreground: hsl(228 56% 13%);
+
+  --destructive: hsl(356 72% 57%);
+  /* Safety Red */
+  --destructive-foreground: hsl(40 20% 96%);
+
+  --border: hsl(207 22% 36%);
+  --input: hsl(280 14% 84%);
+  --ring: hsl(37 46% 51%);
+
+  /* Extended Palette */
+  --gold: hsl(37 46% 51%);
+  /* #B9924C Heritage Gold */
+  --ocean: hsl(228 45% 28%);
+  /* #273A68 Deep Ocean (light-theme primary dark accent) */
+  --steel: hsl(210 18% 52%);
+  /* #6B7C8E Steel Blue */
+  --graphite: hsl(220 15% 22%);
+  /* #313741 Graphite (primary text) */
+  --fog: hsl(220 18% 92%);
+  /* #E8ECF1 Light Fog */
+  --ivory: hsl(40 25% 98%);
+  /* #FBFAF7 Ivory (main background) */
+  --teal: hsl(160 76% 32%);
+  /* #14906A Sea Teal */
+  --copper: hsl(27 42% 49%);
+  /* #AB683C Copper */
+  --midnight: hsl(220 20% 8%);
+  /* #111418 Midnight (high-emphasis text) */
+}
+
+.dark {
+  --background: hsl(220 14% 5%);
+  /* #0A0B0D Terminal Midnight */
+  --foreground: hsl(240 9% 96%);
+  /* #F4F4F7 Cool Ash */
+
+  --card: hsl(210 10% 16%);
+  /* #26292E Steel Rule */
+  --card-foreground: hsl(240 9% 96%);
+
+  --popover: hsl(210 10% 16%);
+  --popover-foreground: hsl(240 9% 96%);
+
+  --primary: hsl(37 46% 51%);
+  /* Heritage Gold in dark */
+  --primary-foreground: hsl(220 14% 5%);
+
+  --secondary: hsl(207 22% 36%);
+  /* Steel Blue */
+  --secondary-foreground: hsl(240 9% 96%);
+
+  --muted: hsl(210 10% 16%);
+  /* Steel Rule */
+  --muted-foreground: hsl(207 18% 60%);
+
+  --accent: hsl(160 76% 29%);
+  /* Sea Teal */
+  --accent-foreground: hsl(240 9% 96%);
+
+  --destructive: hsl(356 72% 57%);
+  --destructive-foreground: hsl(240 9% 96%);
+
+  --border: hsl(210 10% 16%);
+  --input: hsl(210 10% 16%);
+  --ring: hsl(37 46% 51%);
+
+  /* Extended palette */
+  --gold: hsl(37 46% 51%);
+  /* #B9924C Heritage Gold */
+  --ocean: hsl(228 56% 13%);
+  /* #0A1034 Deep Ocean */
+  --steel: hsl(207 22% 36%);
+  /* #415468 Steel Blue */
+  --graphite: hsl(210 14% 16%);
+  /* #222831 Graphite */
+  --fog: hsl(280 14% 84%);
+  /* #D7D0E2 Fog */
+  --ivory: hsl(40 20% 96%);
+  /* #F6F4EF Ivory */
+  --teal: hsl(160 76% 29%);
+  /* #0E8C63 Sea Teal */
+  --copper: hsl(27 42% 49%);
+  /* #AB683C Copper */
+  --midnight: #0A0B0D;
+}
+
+@theme inline {
+  --font-heading: "Barlow Condensed", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-gold: var(--gold);
+  --color-ocean: var(--ocean);
+  --color-steel: var(--steel);
+  --color-graphite: var(--graphite);
+  --color-fog: var(--fog);
+  --color-ivory: var(--ivory);
+  --color-teal: var(--teal);
+  --color-copper: var(--copper);
+  --color-midnight: var(--midnight);
+}
+
+/* Section label - mono technical style */
+.section-label {
+  @apply font-mono text-xs uppercase tracking-widest;
+  color: var(--gold);
+  letter-spacing: 0.14em;
+}
+
+/* Display text */
+.display-text {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+/* Gold underline accent */
+.gold-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.gold-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--gold);
+}
+
+/* Gradient overlays */
+.hero-gradient {
+  background: linear-gradient(135deg,
+      (var(--ocean) / 0.92) 0%,
+      (var(--ocean) / 0.7) 50%,
+      (var(--steel) / 0.5) 100%);
+}
+
+.section-gradient {
+  background: linear-gradient(180deg,
+      #0A0B0D 0%,
+      #0A1034 100%);
+}
+
+/* Technical grid overlay */
+.grid-overlay {
+  background-image:
+    linear-gradient(var(--steel) / 0.06 1px, transparent 1px),
+    linear-gradient(90deg, (var(--steel) / 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Video container */
+.video-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0B0D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 3px;
+}
+
+/* Selection */
+::selection {
+  background: var(--gold) / 0.3;
+  color: #fff;
+}
+
+/* Clip path utilities */
+.clip-diagonal {
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+}
+
+.clip-diagonal-reverse {
+  clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+/* Focus visible */
+.focus-visible-gold:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+
+/* Custom animations */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-dot {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 1000;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-ticker {
+  animation: ticker-scroll 30s linear infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, var(--gold) / 0.15) 50%, transparent 75%;
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@layer base {
+  body {
+    @apply bg-background font-body text-foreground;
+    @apply text-xs md:text-sm xl:text-base;
+  }
+}
