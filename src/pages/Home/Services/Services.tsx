@@ -137,6 +137,10 @@ From freight consolidation and cross-docking to staging, transfer, and load plan
                 q: "Can you handle mixed freight at your terminal?",
                 a: "Yes. Our terminal handles general cargo, temperature-sensitive freight, oversized items, and industrial goods.",
             },
+            {
+                q: "Which locations do you operate in?",
+                a: "Our operations extend across major international energy hubs including Vancouver, Saint John, Houston, Corpus Christi, Rotterdam, Fujairah, Jebel Ali, Khor Fakkan, Jurong, Sebarok, Ulsan, and Ningbo-Zhoushan."
+            }
         ],
     },
     "warehousing": {
@@ -192,6 +196,18 @@ Our facilities offer flexible short and long-term storage, pick-and-pack service
                 q: "Do you offer pick-and-pack services?",
                 a: "Yes. Our warehousing team provides order picking, packing, and preparation for outbound shipment.",
             },
+            {
+                q: "What products can be stored?",
+                a: "Our storage network supports a range of petroleum and energy products including crude oil, EN590 diesel, Jet A1 aviation fuel, fuel oil, gasoil, and selected petrochemical products, subject to terminal specifications."
+            },
+            {
+                q: "How much storage capacity does the company manage?",
+                a: "Our global storage portfolio spans multiple international terminals and provides substantial capacity for petroleum and refined product storage, blending, and logistics operations."
+            },
+            {
+                q: "Can clients lease dedicated tank capacity?",
+                a: "Yes. Subject to availability, dedicated tank capacity can be allocated for short-term, medium-term, and long-term storage requirements."
+            }
         ],
     },
     "logistics": {
@@ -247,6 +263,14 @@ We don't just book freight. We manage it. When issues arise — and in freight, 
                 q: "Can you handle multi-modal freight?",
                 a: "Yes. We coordinate road, rail, and intermodal freight movements as part of comprehensive logistics solutions.",
             },
+            {
+                q: "Does the company provide vessel chartering services?",
+                a: "Yes. Through our marine logistics division, we coordinate vessel scheduling, chartering, cargo movements, and transportation solutions for all commodities",
+            },
+            {
+                q: "Can the company arrange transportation after storage?",
+                a: "Yes. We provide integrated logistics solutions including storage, vessel coordination, cargo scheduling, and destination delivery support."
+            }
         ],
     },
     "cross": {

@@ -65,11 +65,10 @@ const industries = [
 
 export default function IndustriesSection() {
     return (
-        <section className="relative py-20 md:py-24 xl:py-28 overflow-hidden">
-            <div className="absolute inset-0 grid-overlay opacity-10" />
+        <main className="py-20 md:py-24 xl:py-28">
 
-            <div className="relative mx-auto px-4 md:px-6 lg:px-8 xl:px-10 max-w-screen-2xl">
-                <div className="flex lg:flex-row flex-col justify-between lg:items-end gap-6 mb-16">
+            <div className="mx-auto px-4 md:px-6 lg:px-8 xl:px-10 max-w-screen-2xl">
+                <header className="flex lg:flex-row flex-col justify-between lg:items-end gap-6 mb-16">
                     <div>
                         <SectionLabel label="Industries Served" />
                         <h2 className="font-display font-black text-5xl md:text-6xl xl:text-7xl uppercase">
@@ -82,7 +81,7 @@ export default function IndustriesSection() {
                         From grain fields to construction sites, we move what matters most
                         to Western Canadian industry.
                     </p>
-                </div>
+                </header>
 
                 <div className="gap-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-steel/20">
                     {industries.map((industry, i) => (
@@ -136,6 +135,6 @@ export default function IndustriesSection() {
                     </Link>
                 </div>
             </div>
-        </section>
+        </main>
     );
 }

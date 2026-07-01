@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowDown3, ArrowRight3 } from "iconsax-reactjs";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import AnimatedCounter from "./AnimatedCounter";
 
@@ -14,17 +14,12 @@ const metrics = [
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoLoaded, setVideoLoaded] = useState<boolean>(false);
-  const [showQuote, setShowQuote] = useState<boolean>(false);
 
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(() => { });
     }
   }, []);
-
-  // Functions
-  const toggleQuote = () => setShowQuote((prev) => !prev);
 
   return (
     <section className="relative bg-midnight w-full min-h-175 overflow-hidden">
@@ -36,24 +31,14 @@ export default function HeroSection() {
           muted
           loop
           playsInline
-          onLoadedData={() => setVideoLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? "opacity-100" : "opacity-0"}`}
+          className={`w-full h-full object-cover transition-opacity duration-1000 opacity-15`}
           poster="/hero.jpg"
         >
           <source
-            src="https://cdn.coverr.co/videos/coverr-aerial-shot-of-a-freight-train-6197/1080p.mp4"
+            src="/hero.mp4"
             type="video/mp4"
           />
         </video>
-        {/* Fallback image */}
-        {!videoLoaded && (
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-10"
-            style={{
-              backgroundImage: 'url("/hero.jpg")',
-            }}
-          />
-        )}
       </div>
 
       {/* Gradient Overlays */}
@@ -138,14 +123,14 @@ export default function HeroSection() {
                 </p>
               </div>
               <div className="flex items-center gap-4 shrink-0">
-                <button
-                  type="button"
-                  onClick={toggleQuote}
-                  className="group flex items-center gap-3 bg-gold hover:bg-gold/90 hover:shadow-gold px-6 py-3.5 font-semibold text-background tracking-wide transition-all duration-200 cursor-pointer"
+                <Link
+                  to="/verification"
+                  search={{ verify: undefined, number: undefined }}
+                  className="group flex items-center gap-3 bg-gold hover:bg-gold/90 hover:shadow-gold px-4 md:px-6 py-3.5 font-semibold text-background tracking-wide transition-all duration-200 cursor-pointer"
                 >
-                  Request a Quote
+                  Quote & Verification
                   <ArrowRight3 className="size-4 md:size-4.5 xl:size-5 transition-transform group-hover:translate-x-1" />
-                </button>
+                </Link>
                 <Link
                   to="/services"
                   className="flex items-center gap-3 px-6 py-3.5 border border-fog/30 hover:border-gold font-medium text-fog hover:text-gold tracking-wide transition-all duration-200"

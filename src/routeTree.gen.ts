@@ -11,8 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HomeRouteRouteImport } from './routes/_home/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
+import { Route as AdminRouteRouteImport } from './routes/_admin/route'
 import { Route as HomeIndexRouteImport } from './routes/_home/index'
+import { Route as HomeVerificationRouteImport } from './routes/_home/verification'
+import { Route as HomeTermsRouteImport } from './routes/_home/terms'
 import { Route as HomeServicesRouteImport } from './routes/_home/services'
+import { Route as HomePrivacyRouteImport } from './routes/_home/privacy'
 import { Route as HomeNetworkRouteImport } from './routes/_home/network'
 import { Route as HomeIndustriesRouteImport } from './routes/_home/industries'
 import { Route as HomeContactRouteImport } from './routes/_home/contact'
@@ -20,6 +24,16 @@ import { Route as HomeCareersRouteImport } from './routes/_home/careers'
 import { Route as HomeAboutRouteImport } from './routes/_home/about'
 import { Route as AuthUnauthorizedRouteImport } from './routes/_auth/unauthorized'
 import { Route as AuthOperationsRouteImport } from './routes/_auth/operations'
+import { Route as AdminVaultRouteImport } from './routes/_admin/vault'
+import { Route as AdminTsrRouteImport } from './routes/_admin/tsr'
+import { Route as AdminTerminalsRouteImport } from './routes/_admin/terminals'
+import { Route as AdminQuotesRouteImport } from './routes/_admin/quotes'
+import { Route as AdminProductsRouteImport } from './routes/_admin/products'
+import { Route as AdminLogoutRouteImport } from './routes/_admin/logout'
+import { Route as AdminInvoiceRouteImport } from './routes/_admin/invoice'
+import { Route as AdminDocumentsRouteImport } from './routes/_admin/documents'
+import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+import { Route as AdminContactsRouteImport } from './routes/_admin/contacts'
 import { Route as HomeServiceServiceIdRouteImport } from './routes/_home/service.$serviceId'
 
 const HomeRouteRoute = HomeRouteRouteImport.update({
@@ -30,14 +44,33 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeIndexRoute = HomeIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => HomeRouteRoute,
 } as any)
+const HomeVerificationRoute = HomeVerificationRouteImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
+const HomeTermsRoute = HomeTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
 const HomeServicesRoute = HomeServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => HomeRouteRoute,
+} as any)
+const HomePrivacyRoute = HomePrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => HomeRouteRoute,
 } as any)
 const HomeNetworkRoute = HomeNetworkRouteImport.update({
@@ -75,6 +108,56 @@ const AuthOperationsRoute = AuthOperationsRouteImport.update({
   path: '/operations',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AdminVaultRoute = AdminVaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminTsrRoute = AdminTsrRouteImport.update({
+  id: '/tsr',
+  path: '/tsr',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminTerminalsRoute = AdminTerminalsRouteImport.update({
+  id: '/terminals',
+  path: '/terminals',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminQuotesRoute = AdminQuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminLogoutRoute = AdminLogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminInvoiceRoute = AdminInvoiceRouteImport.update({
+  id: '/invoice',
+  path: '/invoice',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminDocumentsRoute = AdminDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminContactsRoute = AdminContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const HomeServiceServiceIdRoute = HomeServiceServiceIdRouteImport.update({
   id: '/service/$serviceId',
   path: '/service/$serviceId',
@@ -83,6 +166,16 @@ const HomeServiceServiceIdRoute = HomeServiceServiceIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof HomeIndexRoute
+  '/contacts': typeof AdminContactsRoute
+  '/dashboard': typeof AdminDashboardRoute
+  '/documents': typeof AdminDocumentsRoute
+  '/invoice': typeof AdminInvoiceRoute
+  '/logout': typeof AdminLogoutRoute
+  '/products': typeof AdminProductsRoute
+  '/quotes': typeof AdminQuotesRoute
+  '/terminals': typeof AdminTerminalsRoute
+  '/tsr': typeof AdminTsrRoute
+  '/vault': typeof AdminVaultRoute
   '/operations': typeof AuthOperationsRoute
   '/unauthorized': typeof AuthUnauthorizedRoute
   '/about': typeof HomeAboutRoute
@@ -90,11 +183,24 @@ export interface FileRoutesByFullPath {
   '/contact': typeof HomeContactRoute
   '/industries': typeof HomeIndustriesRoute
   '/network': typeof HomeNetworkRoute
+  '/privacy': typeof HomePrivacyRoute
   '/services': typeof HomeServicesRoute
+  '/terms': typeof HomeTermsRoute
+  '/verification': typeof HomeVerificationRoute
   '/service/$serviceId': typeof HomeServiceServiceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof HomeIndexRoute
+  '/contacts': typeof AdminContactsRoute
+  '/dashboard': typeof AdminDashboardRoute
+  '/documents': typeof AdminDocumentsRoute
+  '/invoice': typeof AdminInvoiceRoute
+  '/logout': typeof AdminLogoutRoute
+  '/products': typeof AdminProductsRoute
+  '/quotes': typeof AdminQuotesRoute
+  '/terminals': typeof AdminTerminalsRoute
+  '/tsr': typeof AdminTsrRoute
+  '/vault': typeof AdminVaultRoute
   '/operations': typeof AuthOperationsRoute
   '/unauthorized': typeof AuthUnauthorizedRoute
   '/about': typeof HomeAboutRoute
@@ -102,13 +208,27 @@ export interface FileRoutesByTo {
   '/contact': typeof HomeContactRoute
   '/industries': typeof HomeIndustriesRoute
   '/network': typeof HomeNetworkRoute
+  '/privacy': typeof HomePrivacyRoute
   '/services': typeof HomeServicesRoute
+  '/terms': typeof HomeTermsRoute
+  '/verification': typeof HomeVerificationRoute
   '/service/$serviceId': typeof HomeServiceServiceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_admin': typeof AdminRouteRouteWithChildren
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_home': typeof HomeRouteRouteWithChildren
+  '/_admin/contacts': typeof AdminContactsRoute
+  '/_admin/dashboard': typeof AdminDashboardRoute
+  '/_admin/documents': typeof AdminDocumentsRoute
+  '/_admin/invoice': typeof AdminInvoiceRoute
+  '/_admin/logout': typeof AdminLogoutRoute
+  '/_admin/products': typeof AdminProductsRoute
+  '/_admin/quotes': typeof AdminQuotesRoute
+  '/_admin/terminals': typeof AdminTerminalsRoute
+  '/_admin/tsr': typeof AdminTsrRoute
+  '/_admin/vault': typeof AdminVaultRoute
   '/_auth/operations': typeof AuthOperationsRoute
   '/_auth/unauthorized': typeof AuthUnauthorizedRoute
   '/_home/about': typeof HomeAboutRoute
@@ -116,7 +236,10 @@ export interface FileRoutesById {
   '/_home/contact': typeof HomeContactRoute
   '/_home/industries': typeof HomeIndustriesRoute
   '/_home/network': typeof HomeNetworkRoute
+  '/_home/privacy': typeof HomePrivacyRoute
   '/_home/services': typeof HomeServicesRoute
+  '/_home/terms': typeof HomeTermsRoute
+  '/_home/verification': typeof HomeVerificationRoute
   '/_home/': typeof HomeIndexRoute
   '/_home/service/$serviceId': typeof HomeServiceServiceIdRoute
 }
@@ -124,6 +247,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/contacts'
+    | '/dashboard'
+    | '/documents'
+    | '/invoice'
+    | '/logout'
+    | '/products'
+    | '/quotes'
+    | '/terminals'
+    | '/tsr'
+    | '/vault'
     | '/operations'
     | '/unauthorized'
     | '/about'
@@ -131,11 +264,24 @@ export interface FileRouteTypes {
     | '/contact'
     | '/industries'
     | '/network'
+    | '/privacy'
     | '/services'
+    | '/terms'
+    | '/verification'
     | '/service/$serviceId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/contacts'
+    | '/dashboard'
+    | '/documents'
+    | '/invoice'
+    | '/logout'
+    | '/products'
+    | '/quotes'
+    | '/terminals'
+    | '/tsr'
+    | '/vault'
     | '/operations'
     | '/unauthorized'
     | '/about'
@@ -143,12 +289,26 @@ export interface FileRouteTypes {
     | '/contact'
     | '/industries'
     | '/network'
+    | '/privacy'
     | '/services'
+    | '/terms'
+    | '/verification'
     | '/service/$serviceId'
   id:
     | '__root__'
+    | '/_admin'
     | '/_auth'
     | '/_home'
+    | '/_admin/contacts'
+    | '/_admin/dashboard'
+    | '/_admin/documents'
+    | '/_admin/invoice'
+    | '/_admin/logout'
+    | '/_admin/products'
+    | '/_admin/quotes'
+    | '/_admin/terminals'
+    | '/_admin/tsr'
+    | '/_admin/vault'
     | '/_auth/operations'
     | '/_auth/unauthorized'
     | '/_home/about'
@@ -156,12 +316,16 @@ export interface FileRouteTypes {
     | '/_home/contact'
     | '/_home/industries'
     | '/_home/network'
+    | '/_home/privacy'
     | '/_home/services'
+    | '/_home/terms'
+    | '/_home/verification'
     | '/_home/'
     | '/_home/service/$serviceId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   HomeRouteRoute: typeof HomeRouteRouteWithChildren
 }
@@ -182,6 +346,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_home/': {
       id: '/_home/'
       path: '/'
@@ -189,11 +360,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeIndexRouteImport
       parentRoute: typeof HomeRouteRoute
     }
+    '/_home/verification': {
+      id: '/_home/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof HomeVerificationRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
+    '/_home/terms': {
+      id: '/_home/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof HomeTermsRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
     '/_home/services': {
       id: '/_home/services'
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof HomeServicesRouteImport
+      parentRoute: typeof HomeRouteRoute
+    }
+    '/_home/privacy': {
+      id: '/_home/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof HomePrivacyRouteImport
       parentRoute: typeof HomeRouteRoute
     }
     '/_home/network': {
@@ -245,6 +437,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthOperationsRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_admin/vault': {
+      id: '/_admin/vault'
+      path: '/vault'
+      fullPath: '/vault'
+      preLoaderRoute: typeof AdminVaultRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/tsr': {
+      id: '/_admin/tsr'
+      path: '/tsr'
+      fullPath: '/tsr'
+      preLoaderRoute: typeof AdminTsrRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/terminals': {
+      id: '/_admin/terminals'
+      path: '/terminals'
+      fullPath: '/terminals'
+      preLoaderRoute: typeof AdminTerminalsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/quotes': {
+      id: '/_admin/quotes'
+      path: '/quotes'
+      fullPath: '/quotes'
+      preLoaderRoute: typeof AdminQuotesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/products': {
+      id: '/_admin/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/logout': {
+      id: '/_admin/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof AdminLogoutRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/invoice': {
+      id: '/_admin/invoice'
+      path: '/invoice'
+      fullPath: '/invoice'
+      preLoaderRoute: typeof AdminInvoiceRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/documents': {
+      id: '/_admin/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof AdminDocumentsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/dashboard': {
+      id: '/_admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/contacts': {
+      id: '/_admin/contacts'
+      path: '/contacts'
+      fullPath: '/contacts'
+      preLoaderRoute: typeof AdminContactsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/_home/service/$serviceId': {
       id: '/_home/service/$serviceId'
       path: '/service/$serviceId'
@@ -254,6 +516,36 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminRouteRouteChildren {
+  AdminContactsRoute: typeof AdminContactsRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminDocumentsRoute: typeof AdminDocumentsRoute
+  AdminInvoiceRoute: typeof AdminInvoiceRoute
+  AdminLogoutRoute: typeof AdminLogoutRoute
+  AdminProductsRoute: typeof AdminProductsRoute
+  AdminQuotesRoute: typeof AdminQuotesRoute
+  AdminTerminalsRoute: typeof AdminTerminalsRoute
+  AdminTsrRoute: typeof AdminTsrRoute
+  AdminVaultRoute: typeof AdminVaultRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminContactsRoute: AdminContactsRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminDocumentsRoute: AdminDocumentsRoute,
+  AdminInvoiceRoute: AdminInvoiceRoute,
+  AdminLogoutRoute: AdminLogoutRoute,
+  AdminProductsRoute: AdminProductsRoute,
+  AdminQuotesRoute: AdminQuotesRoute,
+  AdminTerminalsRoute: AdminTerminalsRoute,
+  AdminTsrRoute: AdminTsrRoute,
+  AdminVaultRoute: AdminVaultRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
 
 interface AuthRouteRouteChildren {
   AuthOperationsRoute: typeof AuthOperationsRoute
@@ -275,7 +567,10 @@ interface HomeRouteRouteChildren {
   HomeContactRoute: typeof HomeContactRoute
   HomeIndustriesRoute: typeof HomeIndustriesRoute
   HomeNetworkRoute: typeof HomeNetworkRoute
+  HomePrivacyRoute: typeof HomePrivacyRoute
   HomeServicesRoute: typeof HomeServicesRoute
+  HomeTermsRoute: typeof HomeTermsRoute
+  HomeVerificationRoute: typeof HomeVerificationRoute
   HomeIndexRoute: typeof HomeIndexRoute
   HomeServiceServiceIdRoute: typeof HomeServiceServiceIdRoute
 }
@@ -286,7 +581,10 @@ const HomeRouteRouteChildren: HomeRouteRouteChildren = {
   HomeContactRoute: HomeContactRoute,
   HomeIndustriesRoute: HomeIndustriesRoute,
   HomeNetworkRoute: HomeNetworkRoute,
+  HomePrivacyRoute: HomePrivacyRoute,
   HomeServicesRoute: HomeServicesRoute,
+  HomeTermsRoute: HomeTermsRoute,
+  HomeVerificationRoute: HomeVerificationRoute,
   HomeIndexRoute: HomeIndexRoute,
   HomeServiceServiceIdRoute: HomeServiceServiceIdRoute,
 }
@@ -296,6 +594,7 @@ const HomeRouteRouteWithChildren = HomeRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   HomeRouteRoute: HomeRouteRouteWithChildren,
 }

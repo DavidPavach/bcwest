@@ -41,7 +41,6 @@ export default function Navbar() {
 	const [scrolled, setScrolled] = useState<boolean>(false);
 	const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-	const [showQuote, setShowQuote] = useState<boolean>(false);
 
 	const location = useLocation();
 
@@ -60,8 +59,6 @@ export default function Navbar() {
 	// Functions and Constants
 	const isActive = (href: string) =>
 		location.pathname === href || location.pathname.startsWith(href + "/");
-
-	const toggleQuote = () => setShowQuote((prev) => !prev);
 
 	return (
 		<>
@@ -174,13 +171,11 @@ export default function Navbar() {
 								<Mobile className="size-3 md:size-3.5 xl:size-4" />
 								204-958-5300
 							</a>
-							<button
-								type="button"
-								onClick={toggleQuote}
+							<Link to="/verification" search={{ verify: undefined, number: undefined }}
 								className="bg-gold hover:bg-gold/90 hover:shadow-gold px-5 py-2.5 font-semibold text-sm tracking-wide transition-all duration-200 cursor-pointer"
 							>
 								Request Quote
-							</button>
+							</Link>
 						</div>
 
 						{/* Mobile menu toggle */}
@@ -246,13 +241,12 @@ export default function Navbar() {
 								>
 									<Mobile className="size-4" /> 204-958-5300
 								</a>
-								<button
-									onClick={toggleQuote}
-									type="button"
+								<Link
+									to="/verification" search={{ verify: undefined, number: undefined }}
 									className="block bg-gold py-4 w-full font-heading font-bold text-base md:text-lg text-center uppercase tracking-wider cursor-pointer"
 								>
 									Request a Quote
-								</button>
+								</Link>
 							</div>
 						</div>
 					</motion.div>

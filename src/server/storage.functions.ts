@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
-import { processAndUploadFile } from "./storage.server";
+import { DeleteEntitySchema } from "./schema";
+import { deleteStorageFile, processAndUploadFile } from "./storage.server";
 
 // Upload Storage File
 export const uploadStorageFile = createServerFn({ method: "POST" })
@@ -18,4 +19,11 @@ export const uploadStorageFile = createServerFn({ method: "POST" })
 		}
 
 		return await processAndUploadFile(file);
+	});
+
+// Delete File
+export const removeStorageFileFn = createServerFn({ method: "POST" })
+	.inputValidator(DeleteEntitySchema)
+	.handler(async ({ data }) => {
+		return await deleteStorageFile(data.id);
 	});

@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import { ArrowRight3, Clock, Location, Mobile, Sms } from "iconsax-reactjs";
 import { type SubmitEvent, useState } from "react";
+import { toast } from "react-fox-toast";
 
 import PageHero from "#/components/PageHero";
+import { useCreateContact } from "#/services/mutations";
 import { SectionLabel } from "../Landing/AboutSection";
 
 type ContactForm = {
-    name: string;
+    fullName: string;
     company: string;
     email: string;
     phone: string;
@@ -14,20 +16,40 @@ type ContactForm = {
     message: string;
 };
 
-export default function Contact() {
-    const [form, setForm] = useState<ContactForm>({
-        name: "",
-        company: "",
-        email: "",
-        phone: "",
-        service: "",
-        message: "",
-    });
-    const [submitted, setSubmitted] = useState(false);
+const defaultValues = {
+    fullName: "",
+    company: "",
+    email: "",
+    phone: "",
+    service: "",
+    message: "",
+};
 
+export default function Contact() {
+
+
+    const [form, setForm] = useState<ContactForm>(defaultValues);
+
+    // Functions
+    const reset = () => {
+        setForm(defaultValues);
+    };
+
+    const newContact = useCreateContact();
     const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setSubmitted(true);
+        newContact.mutate(
+            { data: form },
+            {
+                onSuccess: () => {
+                    toast.success("Your Contact Request was sent successfully.");
+                    reset();
+                },
+                onError: ({ message }) => {
+                    toast.error(message || "Failed to send request. Please try again.");
+                },
+            },
+        );
     };
 
     return (
@@ -63,7 +85,7 @@ export default function Contact() {
                                             Registered Address
                                         </div>
                                         <div className="text-[11px] text-foreground/80 md:text-xs xl:text-sm leading-relaxed">
-                                            Suite 2900 – 201 Portage Avenue
+                                            201 Portage Avenue
                                             <br />
                                             Winnipeg, Manitoba R3B 3K6
                                             <br />
@@ -155,7 +177,7 @@ export default function Contact() {
 
                         {/* Contact Form */}
                         <div className="lg:col-span-8">
-                            {submitted ? (
+                            {newContact.isSuccess ? (
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -178,7 +200,7 @@ export default function Contact() {
                                     className="border border-steel/30"
                                 >
                                     <div className="bg-ocean/30 px-6 py-4 border-steel/30 border-b">
-                                        <div className="font-mono text-[10px] text-gold/70 uppercase tracking-widest">
+                                        <div className="font-mono text-[10px] text-gold uppercase tracking-widest">
                                             {"INQUIRY FORM // BCWEST_CONTACT"}
                                         </div>
                                     </div>
@@ -186,7 +208,7 @@ export default function Contact() {
                                         <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
                                             {[
                                                 {
-                                                    id: "name",
+                                                    id: "fullName",
                                                     label: "Full Name",
                                                     type: "text",
                                                     required: true,
@@ -308,7 +330,7 @@ export default function Contact() {
 
                                         <button
                                             type="submit"
-                                            className="group flex justify-between items-center bg-gold hover:bg-gold/90 hover:shadow-gold px-6 py-4 w-full font-semibold text-[11px] text-ocean md:text-xs xl:text-sm tracking-wide transition-all duration-200"
+                                            className="group flex justify-between items-center bg-gold hover:bg-gold/90 hover:shadow-gold px-6 py-4 w-full font-semibold text-[11px] text-ocean md:text-xs xl:text-sm tracking-wide transition-all duration-200 cursor-pointer"
                                         >
                                             <span>Submit Inquiry</span>
                                             <ArrowRight3 className="size-3 md:size-3.5 xl:size-4 transition-transform group-hover:translate-x-1" />

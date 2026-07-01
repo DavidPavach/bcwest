@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import About from "@/pages/Home/About";
 import { APP_NAME } from "../__root";
 
 export const Route = createFileRoute("/_home/about")({
@@ -14,5 +15,5 @@ export const Route = createFileRoute("/_home/about")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/_home/about"!</div>;
+  return <About />;
 }

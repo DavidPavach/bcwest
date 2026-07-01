@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUp3, Location, Mobile, Sms } from "iconsax-reactjs";
-import { useState } from "react";
 
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -26,11 +25,8 @@ const companyLinks = [
 ];
 
 export default function Footer() {
-	const [showQuote, setShowQuote] = useState<boolean>(false);
-	const year = new Date().getFullYear();
 
-	// Functions
-	const toggleQuote = () => setShowQuote((prev) => !prev);
+	const year = new Date().getFullYear();
 
 	return (
 		<footer className="border-border/40 border-t">
@@ -64,7 +60,7 @@ export default function Footer() {
 							<div className="flex items-start gap-3">
 								<Location className="mt-0.5 size-3 md:size-3.5 xl:size-4 text-gold shrink-0" />
 								<span className="font-mono text-[10px] text-foreground/60 md:text-[11px] xl:text-xs leading-relaxed">
-									Suite 2900 – 201 Portage Avenue
+									201 Portage Avenue
 									<br />
 									Winnipeg, Manitoba R3B 3K6
 									<br />
@@ -138,14 +134,13 @@ export default function Footer() {
 							Ready to move your freight? Our operations team is available to
 							discuss your transportation and logistics requirements.
 						</p>
-						<button
-							type="button"
-							onClick={toggleQuote}
+						<Link
+							to="/verification" search={{ verify: undefined, number: undefined }}
 							className="group inline-flex justify-center items-center gap-2 bg-gold hover:bg-gold/90 px-5 py-3 w-full font-semibold text-[11px] md:text-xs xl:text-sm tracking-wide transition-all duration-200 cursor-pointer"
 						>
 							Request a Quote
 							<ArrowUp3 className="size-3 md:size-3.5 xl:size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-						</button>
+						</Link>
 						<div className="mt-6 pt-6 border-border/30 border-t">
 							<div className="mb-3 section-label">Corporation No.</div>
 							<div className="font-mono text-[10px] text-foreground/40 md:text-[11px] xl:text-xs">
@@ -169,7 +164,9 @@ export default function Footer() {
 								reserved.
 							</span>
 						</div>
-						<div className="flex items-center gap-2 font-mono text-[10px] text-foreground/30 md:text-[11px] xl:text-xs">
+						<div className="flex items-center gap-x-2 font-mono text-[10px] text-foreground/30 md:text-[11px] xl:text-xs">
+							<Link to="/privacy">Privacy Policy</Link>
+							<Link to="/terms">Terms & Conditions</Link>
 							<span className="inline-block bg-teal rounded-full w-1.5 h-1.5 animate-pulse" />
 							Active — Est. 1997
 						</div>

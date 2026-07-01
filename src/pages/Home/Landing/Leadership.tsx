@@ -4,20 +4,39 @@ import { SectionLabel } from "./AboutSection";
 
 const leaders = [
     {
-        name: "Carrie-Lynn Harz",
-        title: "Director",
-        since: "2024",
-        code: "DIR_01",
-        bio: "Appointed to the Board of Directors in December 2024, Carrie-Lynn Harz brings executive leadership and governance expertise to BCWEST Terminal Freight Services Inc. A Resident Canadian Director, she contributes strategic oversight to the corporation's operational and growth agenda.",
-        initials: "CLH",
+        name: "ESTUNT RAIVO",
+        title: "CEO",
+        nationality: "Estonian",
+        bio: "President & Chief Executive Officer (CEO).",
+        image: "/staff/ceo.jpeg"
     },
     {
-        name: "Nelson R. Olfert",
+        name: "BOLANOS CASTRO SILVIA GRACIELA",
+        title: "Vice President",
+        nationality: "Czech",
+        bio: "Group Executive Vice President – Global Operations.",
+        image: "/staff/vice.jpeg"
+    },
+    {
+        name: "SOPHIE LEBLANC",
+        title: "CCO",
+        nationality: "Canadian",
+        bio: "Chief Commercial Officer (CCO)",
+        image: "/staff/cco.jpeg"
+    },
+    {
+        name: "DAVID RICHARDS",
         title: "Director",
-        since: "2023",
-        code: "DIR_02",
-        bio: "Nelson R. Olfert has served on the BCWEST Board of Directors since August 2023. As a Resident Canadian Director, he provides corporate governance leadership and contributes to the strategic direction of the company's freight and terminal operations.",
-        initials: "NRO",
+        nationality: "British",
+        bio: "Director – Shipping & Marine Logistics",
+        image: "/staff/logistics.jpeg"
+    },
+    {
+        name: "AHMED AL MANSOORI",
+        title: "Director",
+        nationality: "Emirati",
+        bio: "Director – Compliance, HSE & Security",
+        image: "/staff/security.jpeg"
     },
 ];
 
@@ -61,34 +80,21 @@ export default function LeadershipSection() {
                         >
                             <div className="flex items-stretch">
                                 {/* Avatar Panel */}
-                                <div className="flex flex-col justify-center items-center bg-gradient-ocean p-6 w-28 shrink-0">
-                                    <div className="flex justify-center items-center bg-gold/10 mb-3 border-2 border-gold/50 rounded-full w-14 h-14">
-                                        <span className="font-display font-black text-gold text-base md:text-lg xl:text-xl">
-                                            {leader.initials}
-                                        </span>
-                                    </div>
-                                    <div className="font-mono text-[9px] text-gold/50 md:text-[10px] xl:text-[11px] text-center uppercase tracking-widest">
-                                        {leader.code}
+                                <div className="flex flex-col justify-center bg-gradient-ocean w-28 h-full shrink-0">
+                                    <img src={leader.image} alt={`${leader.image}`} className="h-32 object-cover" />
+                                    <div className="font-mono text-[9px] text-gold/50 md:text-[10px] xl:text-[11px] uppercase tracking-widest">
+                                        {leader.nationality}
                                     </div>
                                 </div>
 
                                 {/* Content */}
                                 <div className="flex-1 p-6">
                                     <div className="mb-2 font-mono text-[9px] text-gold/50 uppercase tracking-wider">
-                                        {"DIRECTOR // CBCA REGISTERED"}
+                                        {`${leader.title}`}
                                     </div>
                                     <h3 className="mb-0.5 font-heading font-bold text-ivory text-base md:text-lg xl:text-xl uppercase">
                                         {leader.name}
                                     </h3>
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <span className="text-[10px] text-fog/60 md:text-[11px] xl:text-xs">
-                                            {leader.title}
-                                        </span>
-                                        <span className="bg-steel/40 w-px h-3" />
-                                        <span className="font-mono text-[9px] text-fog/40 md:text-[10px] xl:text-[11px]">
-                                            Since {leader.since}
-                                        </span>
-                                    </div>
                                     <p className="text-[11px] text-fog/60 md:text-xs xl:text-sm leading-relaxed">
                                         {leader.bio}
                                     </p>

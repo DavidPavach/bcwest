@@ -1,11 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowRight3, Mobile } from "iconsax-reactjs";
-import { useState } from "react";
 
 export default function CTA() {
-    const [showQuote, setShowQuote] = useState<boolean>(false);
-
-    // Functions
-    const toggleQuote = () => setShowQuote((prev) => !prev);
 
     return (
         <section className="relative bg-ocean overflow-hidden">
@@ -41,14 +37,13 @@ export default function CTA() {
                     </div>
 
                     <div className="flex flex-col gap-4 lg:col-span-4">
-                        <button
-                            type="button"
-                            onClick={toggleQuote}
+                        <Link
+                            to="/verification" search={{ verify: undefined, number: undefined }}
                             className="group flex justify-between items-center bg-gold hover:bg-gold/90 hover:shadow-gold px-6 py-4 font-semibold text-midnight tracking-wide transition-all duration-200 cursor-pointer"
                         >
                             <span>Request a Quote</span>
                             <ArrowRight3 className="size-4 md:size-4.5 xl:size-5 transition-transform group-hover:translate-x-1" />
-                        </button>
+                        </Link>
                         <a
                             href="tel:2049585300"
                             className="group flex justify-between items-center px-6 py-4 border border-fog/30 hover:border-gold font-medium text-fog hover:text-gold tracking-wide transition-all duration-200"
@@ -63,7 +58,7 @@ export default function CTA() {
                         </a>
                         <div className="pt-2 border-fog/10 border-t">
                             <div className="font-mono text-[9px] text-fog/40 md:text-[10px] xl:text-[11px] leading-relaxed">
-                                Suite 2900 – 201 Portage Avenue
+                                201 Portage Avenue
                                 <br />
                                 Winnipeg, Manitoba R3B 3K6
                             </div>

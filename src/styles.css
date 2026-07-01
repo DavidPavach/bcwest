@@ -38,120 +38,120 @@
 
 :root {
 
-  --radius: 0.25rem;
+  /* Core */
 
-  /* BCWEST Brand Colors - Light Mode */
-  --background: hsl(40 20% 96%);
+  --background: oklch(0.972 0.008 85);
   /* Ivory #F6F4EF */
-  --foreground: hsl(228 56% 13%);
-  /* Deep Ocean #0A1034 */
-
-  --card: hsl(0 0% 100%);
-  --card-foreground: hsl(228 56% 13%);
-
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(228 56% 13%);
-
-  --primary: hsl(228 56% 13%);
-  /* Deep Ocean #0A1034 */
-  --primary-foreground: hsl(40 20% 96%);
-
-  --secondary: hsl(207 22% 36%);
-  /* Steel Blue #415468 */
-  --secondary-foreground: hsl(40 20% 96%);
-
-  --muted: hsl(280 14% 84%);
-  /* Fog #D7D0E2 */
-  --muted-foreground: hsl(210 14% 16%);
+  --foreground: oklch(0.281 0.018 250);
   /* Graphite #222831 */
 
-  --accent: hsl(37 46% 51%);
-  /* Heritage Gold #B9924C */
-  --accent-foreground: hsl(228 56% 13%);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.281 0.018 250);
 
-  --destructive: hsl(356 72% 57%);
-  /* Safety Red */
-  --destructive-foreground: hsl(40 20% 96%);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.281 0.018 250);
 
-  --border: hsl(207 22% 36%);
-  --input: hsl(280 14% 84%);
-  --ring: hsl(37 46% 51%);
+  /* Deep Ocean */
+
+  --primary: oklch(0.219 0.058 258);
+  /* #0A1D34 */
+  --primary-foreground: oklch(0.972 0.008 85);
+
+  /* Steel Blue */
+
+  --secondary: oklch(0.435 0.027 247);
+  /* #415468 */
+  --secondary-foreground: oklch(0.972 0.008 85);
+
+  /* Fog */
+
+  --muted: oklch(0.899 0.012 245);
+  /* #D7DDE2 */
+  --muted-foreground: oklch(0.281 0.018 250);
+
+  /* Heritage Gold */
+
+  --accent: oklch(0.669 0.095 69);
+  /* #B9924C */
+  --accent-foreground: oklch(0.219 0.058 258);
+
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(0.899 0.012 245);
+  --input: oklch(0.899 0.012 245);
+  --ring: oklch(0.669 0.095 69);
 
   /* Extended Palette */
-  --gold: hsl(37 46% 51%);
-  /* #B9924C Heritage Gold */
-  --ocean: hsl(228 45% 28%);
-  /* #273A68 Deep Ocean (light-theme primary dark accent) */
-  --steel: hsl(210 18% 52%);
-  /* #6B7C8E Steel Blue */
-  --graphite: hsl(220 15% 22%);
-  /* #313741 Graphite (primary text) */
-  --fog: hsl(220 18% 92%);
-  /* #E8ECF1 Light Fog */
-  --ivory: hsl(40 25% 98%);
-  /* #FBFAF7 Ivory (main background) */
-  --teal: hsl(160 76% 32%);
-  /* #14906A Sea Teal */
-  --copper: hsl(27 42% 49%);
-  /* #AB683C Copper */
-  --midnight: hsl(220 20% 8%);
-  /* #111418 Midnight (high-emphasis text) */
+
+  --gold: oklch(0.669 0.095 69);
+  --ocean: oklch(0.219 0.058 258);
+  --steel: oklch(0.435 0.027 247);
+
+  --graphite: oklch(0.281 0.018 250);
+  --fog: oklch(0.899 0.012 245);
+  --ivory: oklch(0.972 0.008 85);
+
+  --teal: oklch(0.584 0.121 166);
+  /* #0E8C63 */
+  --copper: oklch(0.593 0.089 53);
+  /* #AB683C */
+
+  --midnight: oklch(0.17 0.02 255);
 }
 
 .dark {
-  --background: hsl(220 14% 5%);
-  /* #0A0B0D Terminal Midnight */
-  --foreground: hsl(240 9% 96%);
-  /* #F4F4F7 Cool Ash */
 
-  --card: hsl(210 10% 16%);
-  /* #26292E Steel Rule */
-  --card-foreground: hsl(240 9% 96%);
+  --background: oklch(0.18 0.025 255);
+  /* Deep Ocean Dark */
+  --foreground: oklch(0.96 0.01 85);
+  /* Ivory */
 
-  --popover: hsl(210 10% 16%);
-  --popover-foreground: hsl(240 9% 96%);
+  --card: oklch(0.23 0.025 255);
+  --card-foreground: oklch(0.96 0.01 85);
 
-  --primary: hsl(37 46% 51%);
-  /* Heritage Gold in dark */
-  --primary-foreground: hsl(220 14% 5%);
+  --popover: oklch(0.23 0.025 255);
+  --popover-foreground: oklch(0.96 0.01 85);
 
-  --secondary: hsl(207 22% 36%);
-  /* Steel Blue */
-  --secondary-foreground: hsl(240 9% 96%);
+  /* Gold becomes primary */
 
-  --muted: hsl(210 10% 16%);
-  /* Steel Rule */
-  --muted-foreground: hsl(207 18% 60%);
+  --primary: oklch(0.72 0.11 69);
+  --primary-foreground: oklch(0.18 0.025 255);
 
-  --accent: hsl(160 76% 29%);
-  /* Sea Teal */
-  --accent-foreground: hsl(240 9% 96%);
+  /* Elevated Steel */
 
-  --destructive: hsl(356 72% 57%);
-  --destructive-foreground: hsl(240 9% 96%);
+  --secondary: oklch(0.55 0.04 247);
+  --secondary-foreground: oklch(0.96 0.01 85);
 
-  --border: hsl(210 10% 16%);
-  --input: hsl(210 10% 16%);
-  --ring: hsl(37 46% 51%);
+  --muted: oklch(0.27 0.02 250);
+  --muted-foreground: oklch(0.82 0.015 245);
 
-  /* Extended palette */
-  --gold: hsl(37 46% 51%);
-  /* #B9924C Heritage Gold */
-  --ocean: hsl(228 56% 13%);
-  /* #0A1034 Deep Ocean */
-  --steel: hsl(207 22% 36%);
-  /* #415468 Steel Blue */
-  --graphite: hsl(210 14% 16%);
-  /* #222831 Graphite */
-  --fog: hsl(280 14% 84%);
-  /* #D7D0E2 Fog */
-  --ivory: hsl(40 20% 96%);
-  /* #F6F4EF Ivory */
-  --teal: hsl(160 76% 29%);
-  /* #0E8C63 Sea Teal */
-  --copper: hsl(27 42% 49%);
-  /* #AB683C Copper */
-  --midnight: #0A0B0D;
+  /* Teal pops in dark mode */
+
+  --accent: oklch(0.65 0.14 166);
+  --accent-foreground: oklch(0.18 0.025 255);
+
+  --destructive: oklch(0.67 0.24 25);
+  --destructive-foreground: oklch(0.96 0.01 85);
+
+  --border: oklch(0.30 0.02 250);
+  --input: oklch(0.30 0.02 250);
+  --ring: oklch(0.72 0.11 69);
+
+  /* Extended Palette */
+
+  --gold: oklch(0.72 0.11 69);
+  --ocean: oklch(0.219 0.058 258);
+  --steel: oklch(0.55 0.04 247);
+
+  --graphite: oklch(0.82 0.015 250);
+  --fog: oklch(0.84 0.012 245);
+  --ivory: oklch(0.96 0.01 85);
+
+  --teal: oklch(0.65 0.14 166);
+  --copper: oklch(0.66 0.11 53);
+
+  --midnight: oklch(0.12 0.015 255);
 }
 
 @theme inline {
@@ -159,7 +159,6 @@
   --font-body: "Inter", sans-serif;
   --font-display: "Barlow Condensed", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
-
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -180,10 +179,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
 
   --color-gold: var(--gold);
   --color-ocean: var(--ocean);
@@ -264,6 +259,7 @@
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
+  height: 4px;
   width: 6px;
 }
 
@@ -274,12 +270,6 @@
 ::-webkit-scrollbar-thumb {
   background: var(--gold);
   border-radius: 3px;
-}
-
-/* Selection */
-::selection {
-  background: var(--gold) / 0.3;
-  color: #fff;
 }
 
 /* Clip path utilities */
@@ -314,18 +304,7 @@
   outline-offset: 3px;
 }
 
-
-/* Custom animations */
-@keyframes ticker-scroll {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
+/* Pulse dot */
 @keyframes pulse-dot {
 
   0%,
@@ -340,54 +319,8 @@
   }
 }
 
-@keyframes draw-line {
-  from {
-    stroke-dashoffset: 1000;
-  }
-
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.animate-ticker {
-  animation: ticker-scroll 30s linear infinite;
-}
-
 .animate-pulse-dot {
   animation: pulse-dot 2s ease-in-out infinite;
-}
-
-.animate-fade-up {
-  animation: fade-up 0.7s ease-out forwards;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent 25%, var(--gold) / 0.15) 50%, transparent 75%;
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
 }
 
 @layer base {

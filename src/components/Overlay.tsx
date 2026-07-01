@@ -15,11 +15,11 @@ type OverlayProps = {
 const getVariantClass = (variant: OverlayProps["variant"]) => {
 	switch (variant) {
 		case "bottom":
-			return "absolute bottom-0 w-full max-w-5xl mx-auto flex flex-col max-h-[90vh]";
+			return "absolute bottom-0 flex flex-col max-h-[90vh]";
 		case "fullscreen":
-			return "absolute inset-0 w-full h-full max-w-7xl mx-auto flex flex-col";
+			return "absolute inset-0 flex flex-col";
 		default:
-			return "relative w-full max-w-7xl mx-auto flex flex-col max-h-[calc(100vh-4rem)]";
+			return "relative flex flex-col max-h-[calc(100vh-4rem)]";
 	}
 };
 
@@ -83,7 +83,7 @@ export const Overlay = ({
 					{/* Backdrop */}
 					{showBackdrop && (
 						<motion.div
-							className="absolute inset-0 bg-background/40 backdrop-blur-sm"
+							className="absolute inset-0 bg-background/60 backdrop-blur-sm"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
@@ -101,7 +101,7 @@ export const Overlay = ({
 						onClick={(e) => e.stopPropagation()}
 					>
 						<div
-							className={`${variant === "bottom" ? "rounded-t-2xl" : "rounded-2xl"} bg-card shadow-lg mx-auto p-4 md:p-6 xl:p-8 border border-border w-full overflow-y-auto text-card-foreground hide-scrollbar ${classNames}`}
+							className={`overflow-y-auto hide-scrollbar ${classNames}`}
 						>
 							{children}
 						</div>

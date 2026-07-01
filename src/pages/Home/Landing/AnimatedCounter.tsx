@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 type CounterProps = {
 	end: string;
-	duration: number;
+	duration?: number;
 	suffix?: string;
 	prefix?: string;
 };

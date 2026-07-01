@@ -43,7 +43,7 @@ const Index = () => {
 					setCookie("coretuim", cookie, 1);
 
 					// Navigate to dashboard
-					return navigate({ to: "/" });
+					return navigate({ to: "/dashboard" });
 				}
 				setIsSubmitting(false);
 				toast.error("Invalid email or password");
