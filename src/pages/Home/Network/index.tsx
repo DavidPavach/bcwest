@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import PageHero from "#/components/PageHero";
 import { SectionLabel } from "../Landing/AboutSection";
 import CTA from "../Landing/CTA";
-import NetworkSection from "../Landing/Network";
+import TankTerminalNetwork from "../Landing/TankTerminalNetwork";
 
 const corridors = [
     {
@@ -60,7 +60,7 @@ export default function Network() {
                 backgroundImage="/network.jpg"
             />
 
-            <NetworkSection />
+            <TankTerminalNetwork />
 
             {/* Corridors Table */}
             <section className="relative bg-ocean py-24 overflow-hidden">
