@@ -70,7 +70,7 @@ export default function Footer() {
 							<div className="flex items-center gap-3">
 								<Mobile className="size-3 md:size-3.5 xl:size-4 text-gold shrink-0" />
 								<a
-									href="tel:2049585300"
+									href="tel:+1 (581) 662-9646"
 									className="font-mono text-[10px] text-foreground/60 md:text-[11px] hover:text-gold xl:text-xs transition-colors"
 								>
 									+1 (581) 662-9646

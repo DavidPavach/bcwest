@@ -103,7 +103,7 @@ export default function Contact() {
                                             Direct Line
                                         </div>
                                         <a
-                                            href="tel:2049585300"
+                                            href="tel:+1 (581) 662-9646"
                                             className="text-[11px] text-foreground/80 hover:text-gold md:text-xs xl:text-sm transition-colors"
                                         >
                                             +1 (581) 662-9646

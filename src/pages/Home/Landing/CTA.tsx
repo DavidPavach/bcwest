@@ -45,7 +45,7 @@ export default function CTA() {
                             <ArrowRight3 className="size-4 md:size-4.5 xl:size-5 transition-transform group-hover:translate-x-1" />
                         </Link>
                         <a
-                            href="tel:2049585300"
+                            href="tel:+1 (581) 662-9646"
                             className="group flex justify-between items-center px-6 py-4 border border-fog/30 hover:border-gold font-medium text-fog hover:text-gold tracking-wide transition-all duration-200"
                         >
                             <span className="flex items-center gap-3">
