@@ -3,18 +3,18 @@ import { Drop, InfoCircle, ShieldSecurity, Ship } from "iconsax-reactjs";
 import { SectionLabel } from "./AboutSection";
 
 const INSPECTION = [
-    "/ecosystem/sgs.png", "/ecosystem/amspec.png", "/ecosystem/intertek.png", "/ecosystem/bureau.png", "/ecosystem/cotecna.png",
-    "/ecosystem/sayBolt.png", "/ecosystem/inspectorate.png", "/ecosystem/ahk.png"
+    "/ecosystem/sgs.jpeg", "/ecosystem/amspec.jpeg", "/ecosystem/intertek.jpeg", "/ecosystem/bureau.jpeg", "/ecosystem/cotecna.jpeg",
+    "/ecosystem/sayBolt.jpeg", "/ecosystem/ahk.jpeg"
 ]
 
 const GLOBAL = [
-    "/ecosystem/shell.png", "/ecosystem/bp.png", "/ecosystem/mobil.png", "/ecosystem/chevron.png", "/ecosystem/total.png",
-    "/ecosystem/saudi.png", "/ecosystem/sinopec.png", "/ecosystem/petrochina.png"
+    "/ecosystem/shell.jpeg", "/ecosystem/bp.jpeg", "/ecosystem/mobil.jpeg", "/ecosystem/chevron.jpeg", "/ecosystem/total.jpeg",
+    "/ecosystem/saudi.jpeg", "/ecosystem/sinopec.jpeg", "/ecosystem/petrochina.jpeg"
 ]
 
 const SHIPPING = [
-    "/ecosystem/maesrk.png", "/ecosystem/bahri.png", "/ecosystem/nyk.png", "/ecosystem/mol.png", "/ecosystem/hafnia.png", "/ecosystem/frontline.png",
-    "/ecosystem/stenaBulk.png", "/ecosystem/teekay.png"
+    "/ecosystem/maesrk.jpeg", "/ecosystem/bahri.jpeg", "/ecosystem/nyk.jpeg", "/ecosystem/mol.jpeg", "/ecosystem/hafnia.jpeg",
+    "/ecosystem/stenaBulk.jpeg", "/ecosystem/teekay.jpeg"
 ]
 
 const EcoSystem = () => {
@@ -52,7 +52,7 @@ const EcoSystem = () => {
                 </Sub>
                 <div className="gap-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-10">
                     {INSPECTION.map((image) => (
-                        <img key={image} src={image} alt={`company logo`} className="border border-border" />
+                        <img key={image} src={image} alt={`company logo`} className="border border-border aspect-video" />
                     ))}
                 </div>
 
@@ -70,7 +70,7 @@ const EcoSystem = () => {
                 </Sub>
                 <div className="gap-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-10">
                     {GLOBAL.map((image) => (
-                        <img key={image} src={image} alt={`company logo`} className="border border-border" />
+                        <img key={image} src={image} alt={`company logo`} className="border border-border aspect-video" />
                     ))}
                 </div>
 
@@ -88,7 +88,7 @@ const EcoSystem = () => {
                 </Sub>
                 <div className="gap-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-10">
                     {SHIPPING.map((image) => (
-                        <img key={image} src={image} alt={`company logo`} className="border border-border" />
+                        <img key={image} src={image} alt={`company logo`} className="border border-border aspect-video" />
                     ))}
                 </div>
 

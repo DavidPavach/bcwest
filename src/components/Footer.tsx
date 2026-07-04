@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUp3, Location, Mobile, Sms } from "iconsax-reactjs";
+import { ArrowUp3, Location, Mobile, Sms, Whatsapp } from "iconsax-reactjs";
 
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -73,7 +73,7 @@ export default function Footer() {
 									href="tel:2049585300"
 									className="font-mono text-[10px] text-foreground/60 md:text-[11px] hover:text-gold xl:text-xs transition-colors"
 								>
-									204-958-5300
+									+1 (581) 662-9646
 								</a>
 							</div>
 							<div className="flex items-center gap-3">
@@ -85,8 +85,14 @@ export default function Footer() {
 									info@bcwestterminal.ca
 								</a>
 							</div>
-							<div className="mt-4">
+							<div className="flex items-center gap-x-5 mt-4">
 								<ThemeToggle />
+								<div className="flex items-center gap-x-2 text-muted-foreground">
+									<a href="https://wa.me/message/YSCNI74HRUYAN1" target="_blank" rel="noopener noreferrer">
+										<Whatsapp className="size-4 md:size-4.5 xl:size-5 text-[#25D366]" variant="Bold" />
+									</a>
+									<p className="text-[10px] md:text-[11px] xl:text-xs">+1 (587) 882-9321</p>
+								</div>
 							</div>
 						</div>
 					</div>

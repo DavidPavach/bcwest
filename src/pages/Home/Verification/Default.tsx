@@ -22,7 +22,7 @@ const PAGES: {
             Icon: DocumentText1,
             title: "Invoice Verification",
             body: "Verify the authenticity and payment status of your invoices through our automated ledger system.",
-            link: "Verify Quote",
+            link: "Verify Invoice",
             url: "invoice",
         },
         {
@@ -36,7 +36,7 @@ const PAGES: {
             Icon: Personalcard,
             title: "Document Verification",
             body: "View and download securely verified legal and operational documents for compliance auditing.",
-            link: "Access Files",
+            link: "Validate Files",
             url: "docs",
         },
         {

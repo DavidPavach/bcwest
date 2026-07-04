@@ -43,7 +43,7 @@ Winnipeg, Manitoba R3B 3K6
 Canada
 
 Email: legal@bcwestterminal.ca
-Phone: 204-958-5300`,
+Phone: +1 (581) 662-9646`,
     },
 ];
 

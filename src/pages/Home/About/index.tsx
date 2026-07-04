@@ -29,11 +29,11 @@ const timeline = [
         year: "2023",
         event: "New Board Governance Structure",
         detail:
-            "Nelson R. Olfert appointed to the Board of Directors. James S. Reimer confirmed as significant controlling shareholder.",
+            "New Board members appointed to the Board of Directors. James S. Reimer confirmed as significant controlling shareholder.",
     },
     {
         year: "2024",
-        event: "Carrie-Lynn Harz Joins Board",
+        event: "New Director Assigned",
         detail:
             "New director appointment strengthens governance and executive oversight of operations.",
     },
@@ -81,7 +81,7 @@ const index = () => {
             {/* Stats bar */}
             <section className="bg-ocean border-border border-y">
                 <div className="mx-auto px-4 md:px-6 lg:px-8 xl:px-10 max-w-screen-2xl">
-                    <div className="grid grid-cols-2 lg:grid-cols-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3">
                         {[
                             {
                                 val: 28,
@@ -95,7 +95,6 @@ const index = () => {
                                 label: "Provinces Served",
                                 code: "CDN_NETWORK",
                             },
-                            { val: 2, suf: "", label: "Board Directors", code: "GOVERNANCE" },
                             {
                                 val: 100,
                                 suf: "K+",

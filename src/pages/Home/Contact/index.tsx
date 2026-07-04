@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight3, Clock, Location, Mobile, Sms } from "iconsax-reactjs";
+import { ArrowRight3, Clock, Location, Mobile, Sms, Whatsapp } from "iconsax-reactjs";
 import { type SubmitEvent, useState } from "react";
 import { toast } from "react-fox-toast";
 
@@ -106,7 +106,7 @@ export default function Contact() {
                                             href="tel:2049585300"
                                             className="text-[11px] text-foreground/80 hover:text-gold md:text-xs xl:text-sm transition-colors"
                                         >
-                                            204-958-5300
+                                            +1 (581) 662-9646
                                         </a>
                                     </div>
                                 </div>
@@ -142,6 +142,22 @@ export default function Contact() {
                                         <div className="mt-0.5 font-mono text-[10px] text-foreground/40">
                                             Office: Mon–Fri, 8AM–5PM CST
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-4">
+                                    <div className="bg-[#25D366]/10 p-2.5 border border-[#25D366]/20 shrink-0">
+                                        <Whatsapp className="size-3 md:size-3.5 xl:size-4 text-[#25D366]" />
+                                    </div>
+                                    <div>
+                                        <div className="mb-1 font-mono text-[#25D366]/60 text-[10px] uppercase tracking-widest">
+                                            WhatsApp
+                                        </div>
+                                        <a
+                                            href="https://wa.me/message/YSCNI74HRUYAN1" target="_blank" rel="noopener noreferrer"
+                                            className="text-[11px] text-foreground/80 hover:text-[#25D366] md:text-xs xl:text-sm transition-colors"
+                                        >
+                                            +1 (587) 882-9321
+                                        </a>
                                     </div>
                                 </div>
                             </div>

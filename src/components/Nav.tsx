@@ -169,7 +169,7 @@ export default function Navbar() {
 								className="flex items-center gap-2 font-mono text-fog/70 hover:text-gold text-xs xl:text-sm transition-colors"
 							>
 								<Mobile className="size-3 md:size-3.5 xl:size-4" />
-								204-958-5300
+								+1 (581) 662-9646
 							</a>
 							<Link to="/verification" search={{ verify: undefined, number: undefined }}
 								className="bg-gold hover:bg-gold/90 hover:shadow-gold px-5 py-2.5 font-semibold text-sm tracking-wide transition-all duration-200 cursor-pointer"
@@ -239,7 +239,7 @@ export default function Navbar() {
 									href="tel:2049585300"
 									className="flex items-center gap-2 font-mono text-foreground/70 text-xs md:text-sm"
 								>
-									<Mobile className="size-4" /> 204-958-5300
+									<Mobile className="size-4" /> +1 (581) 662-9646
 								</a>
 								<Link
 									to="/verification" search={{ verify: undefined, number: undefined }}

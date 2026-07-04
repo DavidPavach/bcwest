@@ -50,7 +50,7 @@ export default function CTA() {
                         >
                             <span className="flex items-center gap-3">
                                 <Mobile className="size-4 md:size-4.5 xl:size-5" />
-                                204-958-5300
+                                +1 (581) 662-9646
                             </span>
                             <span className="font-mono text-[10px] text-fog/40 md:text-[11px] group-hover:text-gold/60 xl:text-xs">
                                 Call Direct

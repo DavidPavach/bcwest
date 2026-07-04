@@ -7,45 +7,45 @@ import TankTerminalNetwork from "../Landing/TankTerminalNetwork";
 
 const corridors = [
     {
-        route: "Winnipeg → Regina",
-        distance: "580 km",
-        type: "Full Corridor",
-        frequency: "Daily",
+        route: "Shanghai → Rotterdam",
+        distance: "19,500 km",
+        type: "Maritime Corridor",
+        frequency: "Weekly",
         code: "CORR_01",
     },
     {
-        route: "Winnipeg → Calgary",
-        distance: "1,340 km",
-        type: "Full Corridor",
-        frequency: "Weekly",
+        route: "New York → London",
+        distance: "5,570 km",
+        type: "Trans-Atlantic",
+        frequency: "Daily",
         code: "CORR_02",
     },
     {
-        route: "Winnipeg → Thunder Bay",
-        distance: "700 km",
-        type: "Eastern Reach",
+        route: "Los Angeles → Tokyo",
+        distance: "8,800 km",
+        type: "Trans-Pacific",
         frequency: "Weekly",
         code: "CORR_03",
     },
     {
-        route: "Winnipeg → Edmonton",
-        distance: "1,550 km",
-        type: "Full Corridor",
+        route: "Yiwu → Madrid",
+        distance: "13,000 km",
+        type: "Eurasian Land Bridge",
         frequency: "Weekly",
         code: "CORR_04",
     },
     {
-        route: "Manitoba → US Border",
+        route: "Shenzhen → Hong Kong Border",
         distance: "Variable",
         type: "Cross-Border",
         frequency: "As Required",
         code: "CORR_05",
     },
     {
-        route: "Calgary → Edmonton",
-        distance: "300 km",
-        type: "AB Corridor",
-        frequency: "Weekly",
+        route: "Dubai → Mumbai",
+        distance: "1,930 km",
+        type: "Middle East-Asia Reach",
+        frequency: "Daily",
         code: "CORR_06",
     },
 ];
@@ -55,7 +55,7 @@ export default function Network() {
         <>
             <PageHero
                 label="Network & Coverage"
-                title="Connected Across Western Canada."
+                title="Connected Globally."
                 subtitle="From our Winnipeg hub, BCWEST's freight network connects Prairie industry to markets and supply chains across Western Canada and the US border."
                 backgroundImage="/network.jpg"
             />

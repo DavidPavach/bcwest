@@ -5,38 +5,43 @@ import { SectionLabel } from "./AboutSection";
 const leaders = [
     {
         name: "ESTUNT RAIVO",
-        title: "CEO",
-        nationality: "Estonian",
-        bio: "President & Chief Executive Officer (CEO).",
-        image: "/staff/ceo.jpeg"
+        title: "President & Chief Executive Officer (CEO).",
+        image: "/staff/ceo.jpeg",
+        since: "2019",
+        bio: "Appointed President & Chief Executive Officer in January 2019, Estunt Raivo provides executive leadership for BCWEST Terminal Freight Services Inc.‘s global strategy, corporate governance, and long-term business development. He oversees the Company’s international terminal storage, marine logistics, freight, and commercial operations, driving sustainable growth while maintaining the highest standards of operational excellence, customer service, and corporate integrity.",
+        initials: "ER",
     },
     {
         name: "BOLANOS CASTRO SILVIA GRACIELA",
-        title: "Vice President",
-        nationality: "Czech",
-        bio: "Group Executive Vice President – Global Operations.",
-        image: "/staff/vice.jpeg"
+        title: "Group Executive Vice President ",
+        image: "/staff/vice.jpeg",
+        since: "2020",
+        bio: "Since assuming the role of Group Executive Vice President – Global Operations in April 2020, Bolanos Castro Silvia Graciela has led BCWEST’s worldwide operational activities, including terminal storage coordination, cargo allocation, vessel scheduling, and operational performance. She is responsible for ensuring efficient service delivery, operational excellence, and consistent standards across the Company’s international storage and logistics network.",
+        initials: "BSC",
     },
     {
         name: "SOPHIE LEBLANC",
-        title: "CCO",
-        nationality: "Canadian",
-        bio: "Chief Commercial Officer (CCO)",
-        image: "/staff/cco.jpeg"
+        title: "Chief Commercial Officer",
+        image: "/staff/cco.jpeg",
+        since: "2021",
+        bio: "Sophie LeBlanc joined BCWEST as Chief Commercial Officer in September 2021 and leads the Company’s global commercial strategy, customer relations, and business development initiatives. She oversees commercial negotiations, strategic partnerships, storage agreements, and international client engagement while supporting BCWEST’s continued expansion across global energy and logistics markets.",
+        initials: "SL",
     },
     {
         name: "DAVID RICHARDS",
-        title: "Director",
-        nationality: "British",
-        bio: "Director – Shipping & Marine Logistics",
-        image: "/staff/logistics.jpeg"
+        title: "Director – Shipping & Marine Logistics",
+        image: "/staff/logistics.jpeg",
+        since: "2022",
+        bio: "David Richards was appointed Director – Shipping & Marine Logistics in February 2022 and oversees BCWEST’s global shipping, marine logistics, and freight coordination activities. He is responsible for vessel scheduling, cargo movement, charter operations, and marine logistics planning, working closely with terminal operators and international logistics partners to ensure safe and efficient operations.",
+        initials: "DR",
     },
     {
         name: "AHMED AL MANSOORI",
-        title: "Director",
-        nationality: "Emirati",
-        bio: "Director – Compliance, HSE & Security",
-        image: "/staff/security.jpeg"
+        title: "Director – Compliance, HSE & Security",
+        image: "/staff/security.jpeg",
+        since: "2023",
+        bio: "Ahmed Al Mansoori joined BCWEST in May 2023 as Director – Compliance, HSE & Security. He leads the Company’s compliance, health, safety, environmental, and security functions, ensuring operations are conducted in accordance with applicable regulatory requirements, industry best practices, and corporate governance standards while strengthening enterprise risk management and operational integrity across BCWEST’s international activities.",
+        initials: "AM",
     },
 ];
 
@@ -58,8 +63,7 @@ export default function LeadershipSection() {
                     </div>
                     <div className="max-w-xs">
                         <div className="pl-4 border-gold/30 border-l-2 font-mono text-[10px] text-fog/50 md:text-[11px] xl:text-xs leading-relaxed">
-                            BCWEST is governed under the Canada Business Corporations Act with
-                            a Board comprising Resident Canadian Directors.
+                            BCWEST is governed under the Canada Business Corporations Act, with a board comprising Global Intelligent Directors.
                         </div>
                     </div>
                 </div>
@@ -80,21 +84,31 @@ export default function LeadershipSection() {
                         >
                             <div className="flex items-stretch">
                                 {/* Avatar Panel */}
-                                <div className="flex flex-col justify-center bg-gradient-ocean w-28 h-full shrink-0">
-                                    <img src={leader.image} alt={`${leader.image}`} className="h-32 object-cover" />
-                                    <div className="font-mono text-[9px] text-gold/50 md:text-[10px] xl:text-[11px] uppercase tracking-widest">
-                                        {leader.nationality}
+                                <div className="flex flex-col justify-center items-center bg-gradient-ocean p-2 md:p-4 xl:p-6 w-20 md:w-24 xl:w-28 shrink-0">
+                                    <div className="flex justify-center items-center bg-gold/10 mb-3 border-2 border-gold/50 rounded-full w-14 h-14">
+                                        <span className="font-display font-black text-gold text-base md:text-lg xl:text-xl">
+                                            {leader.initials}
+                                        </span>
                                     </div>
                                 </div>
 
                                 {/* Content */}
                                 <div className="flex-1 p-6">
                                     <div className="mb-2 font-mono text-[9px] text-gold/50 uppercase tracking-wider">
-                                        {`${leader.title}`}
+                                        {"DIRECTOR // CBCA REGISTERED"}
                                     </div>
                                     <h3 className="mb-0.5 font-heading font-bold text-ivory text-base md:text-lg xl:text-xl uppercase">
                                         {leader.name}
                                     </h3>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <span className="text-[10px] text-fog/60 md:text-[11px] xl:text-xs">
+                                            {leader.title}
+                                        </span>
+                                        <span className="bg-steel/40 w-px h-3" />
+                                        <span className="font-mono text-[9px] text-fog/40 md:text-[10px] xl:text-[11px]">
+                                            Since {leader.since}
+                                        </span>
+                                    </div>
                                     <p className="text-[11px] text-fog/60 md:text-xs xl:text-sm leading-relaxed">
                                         {leader.bio}
                                     </p>
