@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			},
 			{
 				property: "og:image",
-				content: "https://www.bcwestterminal.ca/logo.png",
+				content: "https://www.bcwestterminal.ca/logo_seo.png",
 			},
 
 			// Twitter
@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			},
 			{
 				name: "twitter:image",
-				content: "https://www.bcwestterminal.ca/logo.png",
+				content: "https://www.bcwestterminal.ca/logo_seo.png",
 			},
 		],
 
