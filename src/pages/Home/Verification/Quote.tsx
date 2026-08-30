@@ -108,7 +108,7 @@ const Quote = () => {
             { data: payload }, {
             onSuccess: (response) => {
                 setResult(response);
-                toast.success("TSR was created successfully.");
+                toast.success("Your Quote was generated successfully.");
             },
             onError: ({ message }) => {
                 toast.error(message || "Failed. Please try again.");
