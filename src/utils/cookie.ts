@@ -23,6 +23,6 @@ export const cookie = "7fKq9zT_vL2xP0a";
 
 // Is Logged In
 export const isLoggedIn = (): boolean => {
-	const cookieValue = getCookie("coretuim");
+	const cookieValue = getCookie("bcwest");
 	return cookieValue === cookie;
 };

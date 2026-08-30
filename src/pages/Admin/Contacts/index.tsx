@@ -76,16 +76,14 @@ const index = () => {
                 </p>
             </header>
             {/* Filters */}
-            <div className="flex flex-wrap gap-3 mb-6">
-                <div className="relative w-full">
-                    <SearchNormal className="top-1/2 left-3 absolute size-3 md:size-3.5 xl:size-4 text-muted-foreground -translate-y-1/2" />
-                    <Input
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search by name, company, email…"
-                        className="pl-9 h-10"
-                    />
-                </div>
+            <div className="relative mb-6 w-full">
+                <SearchNormal className="top-1/2 left-3 absolute size-3 md:size-3.5 xl:size-4 text-muted-foreground -translate-y-1/2" />
+                <Input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search by name, company, email…"
+                    className="pl-9 h-10"
+                />
             </div>
 
             {/* Table */}

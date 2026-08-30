@@ -40,7 +40,7 @@ const Index = () => {
 					toast.success("Login successful! Redirecting to dashboard...");
 
 					// Save login cookie for 1 day
-					setCookie("coretuim", cookie, 1);
+					setCookie("bcwest", cookie, 1);
 
 					// Navigate to dashboard
 					return navigate({ to: "/dashboard" });

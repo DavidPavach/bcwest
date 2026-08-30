@@ -79,6 +79,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				property: "og:image",
 				content: "https://www.bcwestterminal.ca/logo_seo.png",
 			},
+			{
+				property: "og:locale",
+				content: "en_CA",
+			},
 
 			// Twitter
 			{
@@ -112,10 +116,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			{
 				rel: "icon",
 				href: "/favicon.ico",
-			},
-			{
-				rel: "apple-touch-icon",
-				href: "/apple-touch-icon.png",
 			},
 		],
 	}),

@@ -1,4 +1,5 @@
-import { Navigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import { SideNav } from "#/components/AdminNav";
 import { isLoggedIn } from "#/utils/cookie";
@@ -8,9 +9,17 @@ const AdminLayout = ({
 }: {
     children: React.ReactNode;
 }) => {
-    if (!isLoggedIn()) {
-        return <Navigate to="/operations" />;
-    }
+    const loggedIn = isLoggedIn()
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!loggedIn) {
+            navigate({
+                to: "/operations",
+                replace: true,
+            });
+        }
+    }, [loggedIn, navigate]);
 
     return (
         <main className="min-h-dvh">

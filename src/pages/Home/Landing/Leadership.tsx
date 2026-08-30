@@ -4,11 +4,11 @@ import { SectionLabel } from "./AboutSection";
 
 const leaders = [
     {
-        name: "ESTUNT RAIVO",
+        name: "UNT RAIVO",
         title: "President & Chief Executive Officer (CEO).",
         image: "/staff/ceo.jpeg",
         since: "2019",
-        bio: "Appointed President & Chief Executive Officer in January 2019, Estunt Raivo provides executive leadership for BCWEST Terminal Freight Services Inc.‘s global strategy, corporate governance, and long-term business development. He oversees the Company’s international terminal storage, marine logistics, freight, and commercial operations, driving sustainable growth while maintaining the highest standards of operational excellence, customer service, and corporate integrity.",
+        bio: "Appointed President & Chief Executive Officer in January 2019, Unt Raivo provides executive leadership for BCWEST Terminal Freight Services Inc.‘s global strategy, corporate governance, and long-term business development. He oversees the Company’s international terminal storage, marine logistics, freight, and commercial operations, driving sustainable growth while maintaining the highest standards of operational excellence, customer service, and corporate integrity.",
         initials: "ER",
     },
     {
