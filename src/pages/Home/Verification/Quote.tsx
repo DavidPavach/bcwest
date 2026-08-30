@@ -339,7 +339,7 @@ const Quote = () => {
                                             {format(result.totalCost)}
                                         </p>
                                         <p className="mt-1.5 font-mono text-[9px] text-gold/70 md:text-[10px] xl:text-[11px] uppercase tracking-wider">
-                                            Inclusive of terminal handling & product-specific surcharges
+                                            Exclusive of terminal handling & product-specific surcharges
                                         </p>
                                     </div>
                                 </main>
