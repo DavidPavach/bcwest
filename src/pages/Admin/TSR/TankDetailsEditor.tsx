@@ -16,11 +16,12 @@ export default function TankDetailsEditor({ tanks = [], onChange }: TankProps) {
             ...next[idx],
             [field]: field === "capacity" || field === "ullage" ? Number(value) : value,
         };
+        console.log("next", next);
         onChange(next);
     };
 
     const addTank = () => {
-        onChange([...tanks, { tankNo: "", product: "", capacity: 0, ullage: 0 }]);
+        onChange([...tanks, { tankNo: "", coordinates: "", product: "", capacity: 0, ullage: 0 }]);
     };
 
     const removeTank = (idx: number) => {
@@ -50,7 +51,7 @@ export default function TankDetailsEditor({ tanks = [], onChange }: TankProps) {
             {tanks.map((tank, idx) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: <>
                 <div key={`tank-${idx}`} className="items-center gap-2 grid grid-cols-12 mb-2">
-                    <div className="space-y-1 col-span-3">
+                    <div className="space-y-1 col-span-2">
                         <Label htmlFor="tankNo">Tank Number</Label>
                         <Input
                             id="tankNo"
@@ -60,7 +61,17 @@ export default function TankDetailsEditor({ tanks = [], onChange }: TankProps) {
                             placeholder="Tank No."
                         />
                     </div>
-                    <div className="space-y-1 col-span-3">
+                    <div className="space-y-1 col-span-2">
+                        <Label htmlFor="tankCoordinates">GPS Coordinates</Label>
+                        <Input
+                            id="tankCoordinates"
+                            type="text"
+                            value={tank.coordinates}
+                            onChange={(e) => updateTank(idx, "coordinates", e.target.value)}
+                            placeholder="GPS Coordinates"
+                        />
+                    </div>
+                    <div className="space-y-1 col-span-2">
                         <Label htmlFor="tankProduct">Tank Product</Label>
                         <Input
                             id="tankProduct"
@@ -92,7 +103,8 @@ export default function TankDetailsEditor({ tanks = [], onChange }: TankProps) {
                             placeholder="Ullage (MT)"
                         />
                     </div>
-                    <div className="flex justify-center col-span-2">
+                    <div className="space-y-1 col-span-2">
+                        <Label className="text-destructive">Delete</Label>
                         <Button
                             variant="outline"
                             onClick={() => removeTank(idx)}

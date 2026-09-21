@@ -4,12 +4,13 @@ import { QRCodeSVG } from "qrcode.react";
 import { useRef, useState } from "react";
 import { toast } from "react-fox-toast";
 
+import { format, formatOnlyDate, toWords } from "#/utils/format";
 import {
-    format,
-    formatOnlyDate,
-    toWords,
-} from "#/utils/format";
-import { downloadAsImage, downloadAsPdf } from "#/utils/generate";
+    downloadAsImage,
+    downloadAsPdf,
+    generateReference,
+} from "#/utils/generate";
+import InvoicePdf from "./pdf/InvoicePdf";
 import { Button } from "./ui/button";
 
 type UrlQrCodeProps = {
@@ -21,7 +22,6 @@ export function UrlQrCode({ url }: UrlQrCodeProps) {
 }
 
 const Invoice = ({ invoice }: { invoice: Invoice }) => {
-
     const docRef = useRef<HTMLDivElement | null>(null);
     const [downloading, setDownloading] = useState<string>("");
 
@@ -34,6 +34,7 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
     );
     const walletDetails = Object.entries(invoice.walletDetails);
     const bankDetails = Object.entries(invoice.bankDetails);
+    const name = generateReference("INVOICE");
 
     // Functions
     const handleDownloadPdf = async () => {
@@ -42,7 +43,7 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
         if (!docRef.current || !invoice) return;
         setDownloading("pdf");
         try {
-            await downloadAsPdf(docRef.current, invoice.invoiceNumber);
+            await downloadAsPdf(docRef.current, name);
         } finally {
             setDownloading("");
         }
@@ -54,7 +55,7 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
         if (!docRef.current || !invoice) return;
         setDownloading("image");
         try {
-            await downloadAsImage(docRef.current, invoice.invoiceNumber);
+            await downloadAsImage(docRef.current, name);
         } finally {
             setDownloading("");
         }
@@ -81,7 +82,8 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
                     Download PDF
                 </Button>
             </section>
-            <main ref={docRef} className="bg-background p-4 md:p-6 xl:p-8 border border-border">
+
+            <main className="bg-background p-4 md:p-6 xl:p-8 border border-border">
                 {/* Header */}
                 <header className="flex sm:flex-row flex-col sm:justify-between sm:items-start gap-y-5 sm:gap-y-0 pb-3">
                     <div className="flex gap-x-2">
@@ -252,7 +254,7 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
                 </section>
 
                 <section className="flex md:flex-row flex-col md:justify-between gap-y-5 md:gap-y-0">
-                    <div className="p-2 md:p-3 xl:p-4border border-border md:w-[48%] text-[11px] md:text-xs xl:text-sm">
+                    <div className="p-2 md:p-3 xl:p-4 border border-border md:w-[48%] text-[11px] md:text-xs xl:text-sm">
                         <p className="font-semibold text-xs md:text-sm xl:text-base">
                             SWIFT Wire Transfer
                         </p>
@@ -260,7 +262,9 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
                             {bankDetails.map(([key, value]) => (
                                 <div key={key} className="flex justify-between gap-x-5">
                                     <span className="text-muted-foreground shrink-0">{key}</span>
-                                    <span className="font-mono text-right break-all">{value}</span>
+                                    <span className="font-mono text-right break-all">
+                                        {value}
+                                    </span>
                                 </div>
                             ))}
                         </div>
@@ -274,15 +278,24 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
                                 .filter(([key]) => key !== "paymentUrl")
                                 .map(([key, value]) => (
                                     <div key={key} className="flex justify-between gap-x-5">
-                                        <span className="text-muted-foreground shrink-0">{key}</span>
-                                        <span className="font-mono text-right break-all">{value}</span>
+                                        <span className="text-muted-foreground shrink-0">
+                                            {key}
+                                        </span>
+                                        <span className="font-mono text-right break-all">
+                                            {value}
+                                        </span>
                                     </div>
                                 ))}
                         </div>
                         {walletDetails.some(([key]) => key === "paymentUrl") && (
                             <div className="flex justify-between items-center">
                                 <p className="text-muted-foreground">QR CODE</p>
-                                <UrlQrCode url={String(walletDetails.find(([key]) => key === "paymentUrl")?.[1] ?? "")} />
+                                <UrlQrCode
+                                    url={String(
+                                        walletDetails.find(([key]) => key === "paymentUrl")?.[1] ??
+                                        "",
+                                    )}
+                                />
                             </div>
                         )}
                     </div>
@@ -305,7 +318,10 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
                         Payment Authorization
                     </header>
                     <h6 className="text-muted-foreground">
-                        The Beneficiary bank account listed on this invoice are designated payment accounts authorized to receive funds on behalf of BCWEST Terminal and Freight Services. Payment to these accounts constitutes full payment of this invoice.
+                        The Beneficiary bank account listed on this invoice are designated
+                        payment accounts authorized to receive funds on behalf of BCWEST
+                        Terminal and Freight Services. Payment to these accounts constitutes
+                        full payment of this invoice.
                     </h6>
                 </section>
 
@@ -322,25 +338,58 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
                 </section>
 
                 <section className="p-4 border border-border text-[10px] md:text-[11px] xl:text-xs">
-                    <header className="mb-1 font-semibold uppercase">
-                        Notes
-                    </header>
+                    <header className="mb-1 font-semibold uppercase">Notes</header>
                     <ul className="pl-4 text-muted-foreground list-disc">
-                        <li>Payment is due within fourteen (14) calendar days from the invoice date unless otherwise agreed in writing.</li>
-                        <li>Late payments may be subject to a 1.5% monthly surcharge in accordance with the applicable agreement.</li>
-                        <li>Any invoice discrepancies or disputes should be submitted in writing within seven (7) calendar days from the invoice date.</li>
-                        <li>All services are governed by the applicable Storage Agreement, Charter Agreement, or other executed service contract.</li>
-                        <li>Storage charges, charter fees, and other applicable service costs shall continue in accordance with the governing agreement until completion or termination of the contracted services.</li>
-                        <li>Please quote the invoice number when making payment or in all related correspondence.</li>
-                        <li>For billing enquiries, please contact billing@bcwestterminals.ca, quote the invoice number in all correspondence.</li>
+                        <li>
+                            Payment is due within fourteen (14) calendar days from the invoice
+                            date unless otherwise agreed in writing.
+                        </li>
+                        <li>
+                            Late payments may be subject to a 1.5% monthly surcharge in
+                            accordance with the applicable agreement.
+                        </li>
+                        <li>
+                            Any invoice discrepancies or disputes should be submitted in
+                            writing within seven (7) calendar days from the invoice date.
+                        </li>
+                        <li>
+                            All services are governed by the applicable Storage Agreement,
+                            Charter Agreement, or other executed service contract.
+                        </li>
+                        <li>
+                            Storage charges, charter fees, and other applicable service costs
+                            shall continue in accordance with the governing agreement until
+                            completion or termination of the contracted services.
+                        </li>
+                        <li>
+                            Please quote the invoice number when making payment or in all
+                            related correspondence.
+                        </li>
+                        <li>
+                            For billing enquiries, please contact billing@bcwestterminals.ca,
+                            quote the invoice number in all correspondence.
+                        </li>
                     </ul>
                 </section>
 
                 {/* Disclaimer */}
                 <div className="pt-4 border-border border-t text-[8px] text-muted-foreground md:text-[9px] xl:text-[10px] text-center leading-relaxed">
-                    This Invoice was <span className="font-semibold text-foreground">system-generated</span> by BCWEST Billing Engine and requires no physical signature or stamp to be valid.
+                    This Invoice was{" "}
+                    <span className="font-semibold text-foreground">
+                        system-generated
+                    </span>{" "}
+                    by BCWEST Billing Engine and requires no physical signature or stamp
+                    to be valid.
                 </div>
             </main>
+
+            {/* Downloading PDF */}
+            <section
+                ref={docRef}
+                className={`${downloading === "pdf" ? "block" : "hidden"} w-full min-w-300`}
+            >
+                <InvoicePdf invoice={invoice} />
+            </section>
         </>
     );
 };

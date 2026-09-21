@@ -65,6 +65,7 @@ export const TsrLineItemSchema = z.object({
 // Tank Details Schema
 export const TankDetailsSchema = z.object({
 	tankNo: z.string(),
+	coordinates: z.string(),
 	product: z.string(),
 	capacity: z.number().positive(),
 	ullage: z.number().positive(),

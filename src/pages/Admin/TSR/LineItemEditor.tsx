@@ -98,7 +98,8 @@ export default function LineItemsEditor({ items = [], onChange }: ItemProps) {
                             placeholder="Amount"
                         />
                     </div>
-                    <div className="flex justify-center col-span-2">
+                    <div className="space-y-1 col-span-2">
+                        <Label className="text-destructive">Delete</Label>
                         <Button
                             variant="outline"
                             onClick={() => removeItem(idx)}

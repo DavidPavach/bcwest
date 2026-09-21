@@ -3,37 +3,53 @@ import { Loader } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "react-fox-toast";
 
-import { formatCurrency, formatDate, formatOnlyDate, toWords } from "#/utils/format";
-import { downloadAsImage, downloadAsPdf } from "#/utils/generate";
+import {
+    formatCurrency,
+    formatDate,
+    formatOnlyDate,
+    toWords,
+} from "#/utils/format";
+import { downloadAsImage, downloadAsPdf, generateReference } from "#/utils/generate";
 import KeyValueBlock from "./KeyValueBlock";
 import LineItems from "./LineItems";
+import TSRPdf from "./pdf/TSRPdf";
 import TankDetails from "./TankDetails";
 import { Button } from "./ui/button";
 
 const TSR = ({ tsr }: { tsr: TSR }) => {
     const docRef = useRef<HTMLDivElement | null>(null);
-    const [downloading, setDownloading] = useState<string>("");
+    const [downloading, setDownloading] = useState<"pdf" | "image" | "">("");
+    const name = generateReference('RECEIPT')
 
-    // Functions
+    // Download PDF
     const handleDownloadPdf = async () => {
+        if (!docRef.current || !tsr) {
+            toast.error("Unable to find the receipt to download.");
+            return;
+        }
+
+        setDownloading("pdf");
         toast.info("Downloading PDF...");
 
-        if (!docRef.current || !tsr) return;
-        setDownloading("pdf");
         try {
-            await downloadAsPdf(docRef.current, tsr.tsrNumber);
+            await downloadAsPdf(docRef.current, name);
         } finally {
             setDownloading("");
         }
     };
 
+    // Download Image
     const handleDownloadImage = async () => {
+        if (!docRef.current || !tsr) {
+            toast.error("Unable to find the receipt to download.");
+            return;
+        }
+
+        setDownloading("image");
         toast.info("Downloading Image...");
 
-        if (!docRef.current || !tsr) return;
-        setDownloading("image");
         try {
-            await downloadAsImage(docRef.current, tsr.tsrNumber);
+            await downloadAsImage(docRef.current, name);
         } finally {
             setDownloading("");
         }
@@ -43,7 +59,11 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
         <>
             {/* Download Actions */}
             <section className="top-0 z-2 sticky flex justify-end gap-x-2 md:gap-x-3 xl:gap-x-5 bg-background mb-4 p-4 md:p-6 xl:p-8 text-[11px] md:text-xs xl:text-sm">
-                <Button onClick={handleDownloadImage}>
+                <Button
+                    type="button"
+                    disabled={!!downloading}
+                    onClick={handleDownloadImage}
+                >
                     {downloading === "image" ? (
                         <Loader className="size-4 md:size-4.5 xl:size-5 animate-spin" />
                     ) : (
@@ -51,7 +71,13 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                     )}
                     Download Image
                 </Button>
-                <Button variant="secondary" onClick={handleDownloadPdf}>
+
+                <Button
+                    type="button"
+                    variant="secondary"
+                    disabled={!!downloading}
+                    onClick={handleDownloadPdf}
+                >
                     {downloading === "pdf" ? (
                         <Loader className="size-4 md:size-4.5 xl:size-5 animate-spin" />
                     ) : (
@@ -61,8 +87,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                 </Button>
             </section>
 
-            <main ref={docRef} className="bg-background p-4 md:p-6 xl:p-8 border border-border">
-
+            <main className="bg-background p-4 md:p-6 xl:p-8 border border-border">
                 {/* Header */}
                 <header className="flex justify-between items-start pb-3 border-border border-b-2">
                     <div className="flex gap-x-2">
@@ -71,20 +96,24 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                             alt="logo"
                             className="dark:hidden size-7 md:size-9 xl:size-11"
                         />
+
                         <img
                             src="/logo_dark.png"
                             alt="logo"
                             className="hidden dark:block size-8 md:size-9 xl:size-10"
                         />
+
                         <div>
                             <div className="font-bold text-[14px] md:text-[15px] xl:text-base tracking-wide">
                                 BCWEST TERMINAL FREIGHT SERVICES INC.
                             </div>
+
                             <div className="text-[10px] text-muted-foreground md:text-[11px] xl:text-xs">
                                 Tank Storage & Logistics Services
                             </div>
                         </div>
                     </div>
+
                     <div className="text-[9px] text-muted-foreground md:text-[10px] xl:text-[11px] text-right leading-relaxed">
                         <div>2900 - 201 Portage Avenue</div>
                         <div>Winnipeg MB R3B 3K6</div>
@@ -99,15 +128,18 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                     <h1 className="font-bold text-[18px] md:text-[20px] xl:text-[22px] uppercase tracking-wide">
                         Tank Storage Receipt
                     </h1>
+
                     <div className="text-[10px] text-muted-foreground md:text-[11px] xl:text-xs text-right leading-relaxed">
                         <div>
                             <span className="font-semibold">Receipt No.:</span>{" "}
                             {tsr.tsrNumber}
                         </div>
+
                         <div>
                             <span className="font-semibold">Issue Date:</span>{" "}
                             {formatDate(tsr.issuedDate)}
                         </div>
+
                         <div>
                             <span className="font-semibold">Issue Time:</span>{" "}
                             {tsr.issuedTime} UTC
@@ -121,12 +153,14 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                         title="Depositor / Product Owner"
                         data={tsr.depositor}
                     />
+
                     <KeyValueBlock title="Terminal Details" data={tsr.terminalDetails} />
                 </div>
 
                 {/* Product Info + Inventory Position */}
                 <div className="gap-5 grid sm:grid-cols-2 mb-3">
                     <KeyValueBlock title="Product Information" data={tsr.productInfo} />
+
                     <KeyValueBlock
                         title="Inventory Position"
                         data={tsr.inventoryPosition}
@@ -136,6 +170,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                 {/* Storage Validity + Storage Summary */}
                 <div className="gap-5 grid sm:grid-cols-2 mb-4">
                     <KeyValueBlock title="Storage Validity" data={tsr.storageValidity} />
+
                     <KeyValueBlock
                         title="Receipt / Payment Details"
                         data={tsr.storageSummary}
@@ -154,6 +189,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                     <div className="mb-1.5 font-bold text-[11px] md:text-xs xl:text-sm uppercase tracking-wide">
                         Charges Summary
                     </div>
+
                     <LineItems items={tsr.lineItems || []} currency={tsr.currency} />
                 </div>
 
@@ -163,6 +199,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                         <div className="bg-muted/10 px-4 py-2 font-bold text-[11px] text-muted-foreground md:text-xs xl:text-sm uppercase tracking-wide">
                             Total Paid ({tsr.currency})
                         </div>
+
                         <div className="px-4 py-2 font-bold text-[11px] xl:text-[14px] md:text-xs">
                             {formatCurrency(tsr.totalAmount)}
                         </div>
@@ -175,16 +212,19 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                         <div className="bg-green-100 dark:bg-green-900 px-3 py-1.5 font-bold text-[11px] text-green-600 dark:text-green-300 md:text-xs xl:text-sm uppercase tracking-wide">
                             Paid In Full
                         </div>
+
                         <div className="px-3 py-2 text-[10px] text-muted-foreground md:text-[11px] xl:text-xs leading-relaxed">
                             This is to confirm that we have received full payment for the
                             above storage services as per invoice referenced above. Thank you
                             for your business.
                         </div>
                     </div>
+
                     <div className="border border-border">
                         <div className="bg-muted px-3 py-1.5 font-bold text-[11px] md:text-xs xl:text-sm uppercase tracking-wide">
                             Amount in Words
                         </div>
+
                         <div className="px-3 py-2 font-medium text-[10px] text-muted-foreground md:text-[11px] xl:text-xs capitalize">
                             {toWords(tsr.totalAmount)} {tsr.currency}
                         </div>
@@ -193,7 +233,8 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
 
                 {/* Signature */}
                 <section className="flex flex-col items-end mb-4 text-[9px] text-muted-foreground md:text-[10px] xl:text-[11px]">
-                    <p className="">Authorized Signatories</p>
+                    <p>Authorized Signatories</p>
+
                     <main className="flex items-center gap-x-5">
                         <div className="max-w-52 sm:max-w-full">
                             <img
@@ -207,29 +248,35 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                                     <span className="font-semibold text-foreground">Name:</span>{" "}
                                     Bolanos Castro Silva Graciela
                                 </p>
+
                                 <p>
                                     <span className="font-semibold text-foreground">Title:</span>{" "}
                                     Group Executive Vice President - Global Operations.
                                 </p>
                             </div>
                         </div>
+
                         <div className="text-right">
                             {tsr.signatureUrl.trim() ? (
                                 <img
                                     src={tsr.signatureUrl}
                                     alt="Signature"
                                     className="mt-2 mb-1 ml-auto h-12"
-                                    style={{ objectFit: "contain" }}
+                                    style={{
+                                        objectFit: "contain",
+                                    }}
                                     crossOrigin="anonymous"
                                 />
                             ) : (
                                 <div className="mb-1 ml-auto h-12" />
                             )}
+
                             <div className="space-y-0.5 pt-1 border-border border-t">
                                 <p>
                                     <span className="font-semibold text-foreground">Name:</span>{" "}
                                     {tsr.signatureName || "Micheal Boroughs"}
                                 </p>
+
                                 <p>
                                     <span className="font-semibold text-foreground">Title:</span>{" "}
                                     {tsr.signatureTitle || "Terminal Manager"}
@@ -245,28 +292,34 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                         <header className="mb-1 font-bold text-[10px] md:text-[11px] xl:text-xs uppercase tracking-wide">
                             VERIFICATION
                         </header>
+
                         <div className="flex items-center gap-x-2">
                             <img
                                 src="/tsr_qr.png"
                                 alt="TSR QR Code"
                                 className="size-10 md:size-12 xl:size-14"
                             />
+
                             <div className="text-[9px] text-muted-foreground md:text-[10px] xl:text-[11px] leading-relaxed">
                                 <div>
                                     Scan the QR code or visit the link below to verify this
                                     receipt.
                                 </div>
-                                <div className="font-semibold text-blue-600 dark:text-blue-400">
+
+                                <div className="font-semibold text-blue-600 dark:text-blue-400 break-all">
                                     https://www.bcwestterminal.ca/verification?verify=tsr
                                 </div>
+
                                 <div>Receipt No.: {tsr.tsrNumber}</div>
                             </div>
                         </div>
                     </div>
+
                     <div>
                         <header className="mb-1 font-bold text-[10px] md:text-[11px] xl:text-xs uppercase tracking-wide">
                             System Information
                         </header>
+
                         <div className="text-[9px] text-muted-foreground md:text-[10px] xl:text-[11px] leading-relaxed">
                             <div>
                                 <span className="font-semibold text-foreground">
@@ -274,18 +327,21 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                                 </span>{" "}
                                 BCWEST TERMINAL FREIGHT SERVICES INC.
                             </div>
+
                             <div>
                                 <span className="font-semibold text-foreground">
                                     Generation Time:
                                 </span>{" "}
                                 {formatOnlyDate(tsr.issuedDate)} {tsr.issuedTime} UTC
                             </div>
+
                             <div>
                                 <span className="font-semibold text-foreground">
                                     Document Type:
                                 </span>{" "}
                                 TSR
                             </div>
+
                             <div>
                                 <span className="font-semibold text-foreground">
                                     System Reference:
@@ -301,6 +357,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                     <header className="mb-1 font-bold uppercase tracking-wide">
                         Storage Declaration
                     </header>
+
                     <p className="my-2">
                         This Tank Storage Receipt (TSR) certifies that the above-described
                         product has been recorded under the contracted storage allocation of
@@ -308,6 +365,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                         is maintained in accordance with the applicable storage
                         arrangements.
                     </p>
+
                     <p>
                         The quantity stated herein reflects the recorded storage inventory
                         as of the date and time of issuance of this receipt. All cargo
@@ -323,23 +381,27 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                     <header className="mb-1 font-bold uppercase tracking-wide">
                         Remarks
                     </header>
+
                     <ul className="pl-4 md:pl-6 xl:pl-8 list-disc">
                         <li>
                             This Tank Storage Receipt is issued for inventory, storage and
                             operational reference purposes and is subject to the applicable
                             Storage Agreement and terminal operational procedures.
                         </li>
+
                         <li>
                             Product release, transfer or cargo nomination shall be subject to
                             authorized instructions, terminal scheduling and operational
                             availability.
                         </li>
+
                         <li>
                             The QR code provided on this receipt is intended for document
                             verification. If this receipt cannot be successfully verified, the
                             holder should contact BCWEST Terminal Freight Services Inc. before
                             relying upon or acting on its contents.
                         </li>
+
                         <li>
                             BCWEST Terminal Freight Services Inc. shall not be responsible for
                             any loss, damage, claim, or liability arising from the
@@ -356,6 +418,11 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                     please contact our billing department
                 </div>
             </main>
+
+            {/* Downloading PDF */}
+            <section ref={docRef} className={`${downloading === "pdf" ? "block" : "hidden"} w-full min-w-300`}>
+                <TSRPdf tsr={tsr} />
+            </section>
         </>
     );
 };

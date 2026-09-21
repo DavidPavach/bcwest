@@ -92,6 +92,7 @@ declare type TsrItem = {
 declare type TsrTank = {
 	tankNo: string;
 	product: string;
+	coordinates: string;
 	capacity: number;
 	ullage: number;
 };

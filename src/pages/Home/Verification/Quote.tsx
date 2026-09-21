@@ -26,7 +26,7 @@ import { Label } from "#/components/ui/label";
 import { useCreateQuote } from "#/services/mutations";
 import { useAllProducts, useAllTerminals } from "#/services/queries";
 import { format } from "#/utils/format";
-import { downloadAsImage, downloadAsPdf } from "#/utils/generate";
+import { downloadAsImage, downloadAsPdf, generateReference } from "#/utils/generate";
 
 type Result = {
     storageRate: number;
@@ -63,6 +63,7 @@ const Quote = () => {
 
     const selectedTerminal = terminals.find((t) => t.id === terminal) || terminals[0];
     const selectedProduct = products.find((p) => p.id === product) || products[0];
+    const name = generateReference('QUOTE')
 
 
     // Functions
@@ -123,7 +124,7 @@ const Quote = () => {
         if (!docRef.current || !result) return;
         setDownloading("pdf");
         try {
-            await downloadAsPdf(docRef.current, String(result.totalCost));
+            await downloadAsPdf(docRef.current, name);
         } finally {
             setDownloading("");
         }
@@ -135,7 +136,7 @@ const Quote = () => {
         if (!docRef.current || !result) return;
         setDownloading("image");
         try {
-            await downloadAsImage(docRef.current, String(result.totalCost));
+            await downloadAsImage(docRef.current, name);
         } finally {
             setDownloading("");
         }

@@ -298,7 +298,7 @@ const Form = ({ id, oldTsr, isNew = true, onClose }: FormProps) => {
                 type="button"
                 onClick={handleSave}
                 disabled={mutation.isPending}
-                className="mt-4 w-full font-display font-bold text-[11px] md:text-xs xl:text-sm uppercase"
+                className="mt-4 w-full h-11 font-display font-bold text-[11px] md:text-xs xl:text-sm uppercase"
             >
                 {mutation.isPending ? (
                     <Loader2 className="size-3 md:size-3.5 xl:size-4 animate-spin" />

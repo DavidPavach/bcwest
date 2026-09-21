@@ -166,7 +166,7 @@ export default function Navbar() {
 						<div className="hidden lg:flex items-center gap-4">
 							<a
 								href="tel:+1 (581) 662-9646"
-								className="flex items-center gap-2 font-mono text-fog/70 hover:text-gold text-xs xl:text-sm transition-colors"
+								className={`flex items-center gap-2 font-mono text-xs xl:text-sm transition-colors ${scrolled ? "text-foreground" : "text-fog/70 hover:text-gold"}`}
 							>
 								<Mobile className="size-3 md:size-3.5 xl:size-4" />
 								+1 (581) 662-9646
