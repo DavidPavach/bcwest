@@ -28,11 +28,11 @@ const leaders = [
         initials: "SL",
     },
     {
-        name: "DAVID RICHARDS",
+        name: "SCHEMBRI JAMES MICHAEL",
         title: "Director – Shipping & Marine Logistics",
         image: "/staff/logistics.jpeg",
         since: "2022",
-        bio: "David Richards was appointed Director – Shipping & Marine Logistics in February 2022 and oversees BCWEST’s global shipping, marine logistics, and freight coordination activities. He is responsible for vessel scheduling, cargo movement, charter operations, and marine logistics planning, working closely with terminal operators and international logistics partners to ensure safe and efficient operations.",
+        bio: "Schembri James Michael was appointed Head of Shipping & Marine Logistics in February 2022 and oversees BCWEST’s global shipping, marine logistics, and freight coordination activities. He is responsible for vessel scheduling, cargo movement, charter operations, and marine logistics planning, working closely with terminal operators and international logistics partners to ensure safe and efficient operations.",
         initials: "DR",
     },
     {
