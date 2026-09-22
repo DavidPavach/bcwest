@@ -117,7 +117,7 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
             )}
 
             {/* Line Items / Charges */}
-            <div className="mb-2">
+            <div className="mb-4">
                 <div className="mb-1.5 font-bold text-sm uppercase tracking-wide">
                     Charges Summary
                 </div>
@@ -201,7 +201,6 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
                                 style={{
                                     objectFit: "contain",
                                 }}
-                                crossOrigin="anonymous"
                             />
                         ) : (
                             <div className="mb-1 ml-auto h-12" />

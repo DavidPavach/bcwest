@@ -185,7 +185,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                 )}
 
                 {/* Line Items / Charges */}
-                <div className="mb-2">
+                <div className="mb-4">
                     <div className="mb-1.5 font-bold text-[11px] md:text-xs xl:text-sm uppercase tracking-wide">
                         Charges Summary
                     </div>
@@ -265,7 +265,6 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                                     style={{
                                         objectFit: "contain",
                                     }}
-                                    crossOrigin="anonymous"
                                 />
                             ) : (
                                 <div className="mb-1 ml-auto h-12" />
