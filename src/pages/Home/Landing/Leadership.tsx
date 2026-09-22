@@ -29,7 +29,7 @@ const leaders = [
     },
     {
         name: "SCHEMBRI JAMES MICHAEL",
-        title: "Director – Shipping & Marine Logistics",
+        title: "Head of Shipping & Marine Logistics",
         image: "/staff/logistics.jpeg",
         since: "2022",
         bio: "Schembri James Michael was appointed Head of Shipping & Marine Logistics in February 2022 and oversees BCWEST’s global shipping, marine logistics, and freight coordination activities. He is responsible for vessel scheduling, cargo movement, charter operations, and marine logistics planning, working closely with terminal operators and international logistics partners to ensure safe and efficient operations.",
