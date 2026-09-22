@@ -4,7 +4,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useRef, useState } from "react";
 import { toast } from "react-fox-toast";
 
-import { format, formatOnlyDate, toWords } from "#/utils/format";
+import { format, formatOnlyDate, toCurrencyWords } from "#/utils/format";
 import {
     downloadAsImage,
     downloadAsPdf,
@@ -236,7 +236,7 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
                             </p>
                         </div>
                         <p className="text-[10px] text-muted-foreground md:text-[11px] xl:text-xs italic capitalize">
-                            {toWords(totalAmount)} {invoice.currency}
+                            {toCurrencyWords(totalAmount)} {invoice.currency}
                         </p>
                     </section>
                 )}
@@ -386,7 +386,7 @@ const Invoice = ({ invoice }: { invoice: Invoice }) => {
             {/* Downloading PDF */}
             <section
                 ref={docRef}
-                className={`${downloading === "pdf" ? "block" : "hidden"} w-full min-w-300`}
+                className={`${downloading === "pdf" || downloading === "image" ? "block" : "hidden"} w-full min-w-300`}
             >
                 <InvoicePdf invoice={invoice} />
             </section>

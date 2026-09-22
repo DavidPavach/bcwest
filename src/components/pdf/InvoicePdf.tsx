@@ -1,4 +1,4 @@
-import { format, formatOnlyDate, toWords } from "#/utils/format";
+import { format, formatOnlyDate, toCurrencyWords } from "#/utils/format";
 import { UrlQrCode } from "../Invoice";
 
 const InvoicePdf = ({ invoice }: { invoice: Invoice }) => {
@@ -18,16 +18,8 @@ const InvoicePdf = ({ invoice }: { invoice: Invoice }) => {
             {/* Header */}
             <header className="flex sm:flex-row flex-col sm:justify-between sm:items-start gap-y-5 sm:gap-y-0 pb-3">
                 <div className="flex gap-x-2">
-                    <img
-                        src="/logo_light.png"
-                        alt="logo"
-                        className="dark:hidden size-10"
-                    />
-                    <img
-                        src="/logo_dark.png"
-                        alt="logo"
-                        className="hidden dark:block size-10"
-                    />
+                    <img src="/logo_light.png" alt="logo" className="dark:hidden size-10" />
+                    <img src="/logo_dark.png" alt="logo" className="hidden dark:block size-10" />
                     <div>
                         <div className="font-bold text-base tracking-wide">
                             BCWEST TERMINAL FREIGHT SERVICES INC.
@@ -124,13 +116,8 @@ const InvoicePdf = ({ invoice }: { invoice: Invoice }) => {
 
                         <div className="flex md:flex-row flex-col bg-background mt-4 border border-border">
                             {serviceCharge.map(([key, value], index) => (
-                                <div
-                                    key={key}
-                                    className={`flex-1 p-4 ${index !== serviceCharge.length - 1
-                                        ? "border-b md:border-b-0 md:border-r border-border"
-                                        : ""
-                                        }`}
-                                >
+                                <div key={key} className={`flex-1 p-4 ${index !== serviceCharge.length - 1
+                                    ? "border-b md:border-b-0 md:border-r border-border" : ""}`}>
                                     <h6 className="text-muted-foreground text-xs uppercase tracking-wider">
                                         {key}
                                     </h6>
@@ -148,10 +135,7 @@ const InvoicePdf = ({ invoice }: { invoice: Invoice }) => {
             {breakDown.length > 0 && (
                 <section className="space-y-3 mt-4 ml-auto w-fit">
                     {breakDown.map((value) => (
-                        <div
-                            key={value.label}
-                            className="flex justify-between gap-x-5 py-2 border-border border-b"
-                        >
+                        <div key={value.label} className="flex justify-between gap-x-5 py-2 border-border border-b">
                             <p className="text-muted-foreground">{value.label}</p>
                             <p className="text-right">
                                 {format(value.amount)} {invoice.currency}
@@ -167,7 +151,7 @@ const InvoicePdf = ({ invoice }: { invoice: Invoice }) => {
                         </p>
                     </div>
                     <p className="text-muted-foreground text-xs italic capitalize">
-                        {toWords(totalAmount)} {invoice.currency}
+                        {toCurrencyWords(totalAmount)} {invoice.currency}
                     </p>
                 </section>
             )}

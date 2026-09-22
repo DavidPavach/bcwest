@@ -54,16 +54,8 @@ export default function TankDetails({
                             "Capacity (MT)",
                             "Ullage (MT)",
                         ].map((header, index) => (
-                            <th
-                                key={header}
-                                className={`${columnHeaderClassName} ${index < 2
-                                    ? "text-left"
-                                    : "text-right"
-                                    } ${index < 3
-                                        ? "border border-border"
-                                        : ""
-                                    }`}
-                            >
+                            <th key={header}
+                                className={`${columnHeaderClassName} ${index < 2 ? "text-left" : "text-right"} ${index < 3 ? "border border-border" : ""}`}>
                                 {header}
                             </th>
                         ))}
@@ -81,16 +73,14 @@ export default function TankDetails({
 
                             <td>{tank.coordinates}</td>
 
-                            <td>{tank.product}</td>
+                            <td className="text-right">{tank.product}</td>
 
                             <td className="text-right">
                                 {tank.capacity.toLocaleString("en-US")}
                             </td>
 
                             <td className="text-right">
-                                {tank.ullage.toLocaleString("en-US", {
-                                    minimumFractionDigits: 3,
-                                })}
+                                {tank.ullage.toLocaleString("en-US", { minimumFractionDigits: 3 })}
                             </td>
                         </tr>
                     ))}

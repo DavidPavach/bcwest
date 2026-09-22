@@ -1,25 +1,24 @@
-import { formatCurrency, formatDate, formatOnlyDate, toWords } from "#/utils/format";
+import { formatCurrency, formatDate, formatOnlyDate, toCurrencyWords } from "#/utils/format";
 import KeyValueBlock from "../KeyValueBlock";
 import LineItems from "../LineItems";
 import TankDetails from "../TankDetails";
 
 const TSRPdf = ({ tsr }: { tsr: TSR }) => {
+
+    const totalAmount = (tsr.lineItems || []).reduce(
+        (s, item) => s + (Number(item.amount) || 0),
+        0,
+    );
+
+
     return (
         <main className="bg-background p-8 border border-border">
             {/* Header */}
             <header className="flex justify-between items-start pb-3 border-border border-b-2">
                 <div className="flex gap-x-2">
-                    <img
-                        src="/logo_light.png"
-                        alt="logo"
-                        className="dark:hidden size-11"
-                    />
 
-                    <img
-                        src="/logo_dark.png"
-                        alt="logo"
-                        className="hidden dark:block size-10"
-                    />
+                    <img src="/logo_light.png" alt="logo" className="dark:hidden size-11" />
+                    <img src="/logo_dark.png" alt="logo" className="hidden dark:block size-10" />
 
                     <div>
                         <div className="font-bold text-base tracking-wide">
@@ -36,7 +35,7 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
                     <div>2900 - 201 Portage Avenue</div>
                     <div>Winnipeg MB R3B 3K6</div>
                     <div>Tel: 204-958-5315</div>
-                    <div>Email: info@bcwestterminals.ca</div>
+                    <div>Email: finance@bcwestterminals.ca</div>
                     <div>Co. Reg. No.(Numéro de la société): 341779-4</div>
                 </div>
             </header>
@@ -53,13 +52,10 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
                     </div>
 
                     <div>
-                        <span className="font-semibold">Issue Date:</span>{" "}
-                        {formatDate(tsr.issuedDate)}
+                        <span className="font-semibold">Issue Date:</span> {formatDate(tsr.issuedDate)}
                     </div>
-
                     <div>
-                        <span className="font-semibold">Issue Time:</span> {tsr.issuedTime}{" "}
-                        UTC
+                        <span className="font-semibold">Issue Time:</span> {tsr.issuedTime}{" "}  UTC
                     </div>
                 </div>
             </section>
@@ -111,13 +107,13 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
 
             {/* Tank Details */}
             {tsr.tankDetails && tsr.tankDetails.length > 0 && (
-                <div className="mb-4">
+                <div className="mb-4 pdf-keep-together">
                     <TankDetails tanks={tsr.tankDetails} nonResponsive />
                 </div>
             )}
 
             {/* Line Items / Charges */}
-            <div className="mb-4">
+            <div className="mb-4 pdf-keep-together">
                 <div className="mb-1.5 font-bold text-sm uppercase tracking-wide">
                     Charges Summary
                 </div>
@@ -130,20 +126,20 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
             </div>
 
             {/* Total Row */}
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end mb-4 pdf-keep-together">
                 <div className="flex items-center border border-border">
                     <div className="bg-muted/10 px-4 py-2 font-bold text-muted-foreground text-sm uppercase tracking-wide">
-                        Total Paid ({tsr.currency})
+                        Total Amount Paid ({tsr.currency})
                     </div>
 
                     <div className="px-4 py-2 font-bold text-[14px]">
-                        {formatCurrency(tsr.totalAmount)}
+                        {formatCurrency(totalAmount)}
                     </div>
                 </div>
             </div>
 
             {/* Amount in Words + Paid Badge */}
-            <section className="gap-3 grid grid-cols-2 mb-4">
+            <section className="gap-3 grid grid-cols-2 mb-4 pdf-keep-together">
                 <div className="border border-border">
                     <div className="bg-green-100 dark:bg-green-900 px-3 py-1.5 font-bold text-green-600 dark:text-green-300 text-sm uppercase tracking-wide">
                         Paid In Full
@@ -162,7 +158,7 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
                     </div>
 
                     <div className="px-3 py-2 font-medium text-muted-foreground text-xs capitalize">
-                        {toWords(tsr.totalAmount)} {tsr.currency}
+                        {toCurrencyWords(totalAmount)}
                     </div>
                 </div>
             </section>
@@ -193,7 +189,7 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
                     </div>
 
                     <div className="text-right">
-                        {tsr.signatureUrl.trim() ? (
+                        {tsr.signatureUrl.trim() && (
                             <img
                                 src={tsr.signatureUrl}
                                 alt="Signature"
@@ -202,19 +198,17 @@ const TSRPdf = ({ tsr }: { tsr: TSR }) => {
                                     objectFit: "contain",
                                 }}
                             />
-                        ) : (
-                            <div className="mb-1 ml-auto h-12" />
                         )}
 
                         <div className="space-y-0.5 pt-1 border-border border-t">
                             <p>
                                 <span className="font-semibold text-foreground">Name:</span>{" "}
-                                {tsr.signatureName || "Micheal Boroughs"}
+                                {tsr.signatureName || ""}
                             </p>
 
                             <p>
                                 <span className="font-semibold text-foreground">Title:</span>{" "}
-                                {tsr.signatureTitle || "Terminal Manager"}
+                                {tsr.signatureTitle || ""}
                             </p>
                         </div>
                     </div>

@@ -70,7 +70,6 @@ declare type TsrPayload = {
 	lineItems: TsrLineItem[];
 	tankDetails: TsrTank[];
 
-	totalAmount: number;
 	signatureUrl: string;
 	signatureName: string;
 	signatureTitle: string;
@@ -80,8 +79,8 @@ declare type TsrPayload = {
 	issuedTime: string;
 };
 
-// TSR Item
-declare type TsrItem = {
+// TSR Line Item
+declare type TsrLineItem = {
 	description: string;
 	quantityText: string;
 	rateText: string;
@@ -106,7 +105,6 @@ declare type TSR = {
 	tsrNumber: string;
 	issuedDate: string;
 	issuedTime: string;
-	totalAmount: number;
 	signatureUrl: string;
 	signatureName: string;
 	signatureTitle: string;
@@ -119,7 +117,7 @@ declare type TSR = {
 	terminalDetails: TsrKeyValue;
 
 	tankDetails: Array<TsrTank>;
-	lineItems: Array<TsrItem>;
+	lineItems: Array<TsrLineItem>;
 };
 
 // Invoice

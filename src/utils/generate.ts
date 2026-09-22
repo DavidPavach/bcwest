@@ -1,8 +1,78 @@
 import { toPng } from "html-to-image";
+import html2canvas from "html2canvas-pro";
 import { jsPDF } from "jspdf";
 import { toast } from "react-fox-toast";
 
+// Environment
+export function getRequiredEnv(
+	value: string | undefined,
+	name: string,
+): string {
+	if (!value) {
+		throw new Error(`Missing required environment variable: ${name}`);
+	}
+
+	return value;
+}
+
 // Helpers
+function getSafePageBreaks(element: HTMLElement): number[] {
+	const rootRect = element.getBoundingClientRect();
+	const rootWidth = element.scrollWidth;
+	const rootHeight = element.scrollHeight;
+
+	const breaks = new Set<number>();
+
+	// Always allow the beginning and end.
+	breaks.add(0);
+	breaks.add(rootHeight);
+
+	const descendants = Array.from(element.querySelectorAll<HTMLElement>("*"));
+
+	for (const child of descendants) {
+		const style = getComputedStyle(child);
+
+		if (style.display === "none" || style.visibility === "hidden") {
+			continue;
+		}
+
+		const rect = child.getBoundingClientRect();
+
+		if (!rect.width || !rect.height) {
+			continue;
+		}
+
+		const top = rect.top - rootRect.top;
+		const bottom = rect.bottom - rootRect.top;
+
+		if (bottom <= 0 || top >= rootHeight) {
+			continue;
+		}
+
+		const isBlockLike =
+			style.display === "block" ||
+			style.display === "flex" ||
+			style.display === "grid" ||
+			style.display === "table" ||
+			style.display === "table-row" ||
+			style.display === "list-item" ||
+			style.display === "flow-root";
+
+		const keepTogether =
+			style.breakInside === "avoid" ||
+			style.pageBreakInside === "avoid" ||
+			child.classList.contains("pdf-keep-together");
+
+		const isMeaningfulWidth = rect.width >= rootWidth * 0.35;
+
+		if ((isBlockLike && isMeaningfulWidth) || keepTogether) {
+			breaks.add(Math.round(bottom));
+		}
+	}
+
+	return [...breaks].sort((a, b) => a - b);
+}
+
 function sanitizeFilename(filename: string): string {
 	const controlChars = Array.from({ length: 32 }, (_, index) =>
 		String.fromCharCode(index),
@@ -18,45 +88,36 @@ function sanitizeFilename(filename: string): string {
 }
 
 async function waitForAssets(element: HTMLElement): Promise<void> {
-	// Wait for fonts.
+	// Wait for all document fonts.
 	if (document.fonts?.ready) {
 		await document.fonts.ready;
 	}
 
-	// Wait for images inside the document.
 	const images = Array.from(element.querySelectorAll("img"));
 
 	await Promise.all(
-		images.map(
-			(img) =>
-				new Promise<void>((resolve) => {
-					if (img.complete) {
-						resolve();
-						return;
-					}
+		images.map(async (img) => {
+			if (!img.complete) {
+				await new Promise<void>((resolve) => {
+					const done = () => resolve();
 
-					img.addEventListener("load", () => resolve(), {
+					img.addEventListener("load", done, {
 						once: true,
 					});
 
-					img.addEventListener("error", () => resolve(), {
+					img.addEventListener("error", done, {
 						once: true,
 					});
-				}),
-		),
+				});
+			}
+
+			try {
+				if (typeof img.decode === "function") {
+					await img.decode();
+				}
+			} catch {}
+		}),
 	);
-}
-
-// Environment
-export function getRequiredEnv(
-	value: string | undefined,
-	name: string,
-): string {
-	if (!value) {
-		throw new Error(`Missing required environment variable: ${name}`);
-	}
-
-	return value;
 }
 
 // Copy To Clipboard
@@ -113,20 +174,58 @@ export async function downloadAsPdf(
 	try {
 		await waitForAssets(element);
 
+		await new Promise<void>((resolve) => {
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => resolve());
+			});
+		});
+
 		const rect = element.getBoundingClientRect();
 
 		if (!rect.width || !rect.height) {
 			throw new Error("The document has no measurable dimensions.");
 		}
 
-		const A4_WIDTH_MM = 210;
+		const htmlWidth = Math.ceil(
+			Math.max(element.scrollWidth, element.offsetWidth, rect.width),
+		);
 
-		// Slightly higher than 300 DPI
-		const TARGET_DPI = 330;
+		const htmlHeight = Math.ceil(
+			Math.max(element.scrollHeight, element.offsetHeight, rect.height),
+		);
 
-		const targetWidthPx = (A4_WIDTH_MM / 25.4) * TARGET_DPI;
+		const orientation = htmlWidth >= htmlHeight ? "landscape" : "portrait";
 
-		const pixelRatio = Math.min(Math.max(targetWidthPx / rect.width, 2), 4);
+		const pdf = new jsPDF({
+			orientation,
+			unit: "mm",
+			format: "a4",
+			compress: true,
+			putOnlyUsedFonts: true,
+			floatPrecision: 16,
+		});
+
+		const pageWidth = pdf.internal.pageSize.getWidth();
+		const pageHeight = pdf.internal.pageSize.getHeight();
+
+		const margin = 4;
+
+		const contentWidth = pageWidth - margin * 2;
+		const contentHeight = pageHeight - margin * 2;
+
+		const pageHeightInCssPx = (htmlWidth * contentHeight) / contentWidth;
+
+		const MAX_CANVAS_PIXELS = 40_000_000;
+
+		let scale = 3;
+
+		const estimatedPixels = htmlWidth * htmlHeight * scale * scale;
+
+		if (estimatedPixels > MAX_CANVAS_PIXELS) {
+			scale = Math.sqrt(MAX_CANVAS_PIXELS / (htmlWidth * htmlHeight));
+		}
+
+		scale = Math.max(1, scale);
 
 		const computedStyles = getComputedStyle(element);
 
@@ -136,77 +235,129 @@ export async function downloadAsPdf(
 				? "#ffffff"
 				: computedStyles.backgroundColor;
 
-		const dataUrl = await toPng(element, {
-			cacheBust: true,
-			pixelRatio,
+		const canvas = await html2canvas(element, {
+			scale,
+
 			backgroundColor,
+
+			useCORS: true,
+			allowTaint: false,
+
+			imageTimeout: 30_000,
+
+			logging: false,
+
+			scrollX: 0,
+			scrollY: 0,
+
+			windowWidth: htmlWidth,
+			windowHeight: htmlHeight,
 		});
 
-		const image = new Image();
+		const safeBreaks = getSafePageBreaks(element);
 
-		await new Promise<void>((resolve, reject) => {
-			image.onload = () => resolve();
-			image.onerror = () =>
-				reject(new Error("Failed to load generated PDF image."));
+		if (htmlHeight <= pageHeightInCssPx + 1) {
+			const imageHeight = (htmlHeight / htmlWidth) * contentWidth;
 
-			image.src = dataUrl;
-		});
-
-		const pdf = new jsPDF({
-			orientation: "portrait",
-			unit: "mm",
-			format: "a4",
-			compress: true,
-		});
-
-		const pageWidth = pdf.internal.pageSize.getWidth();
-		const pageHeight = pdf.internal.pageSize.getHeight();
-
-		const imageWidth = pageWidth;
-		const imageHeight = (image.height * imageWidth) / image.width;
-
-		let heightLeft = imageHeight;
-		let position = 0;
-
-		pdf.addImage(
-			dataUrl,
-			"PNG",
-			0,
-			position,
-			imageWidth,
-			imageHeight,
-			undefined,
-			"FAST",
-		);
-
-		heightLeft -= pageHeight;
-
-		while (heightLeft > 0) {
-			position -= pageHeight;
-
-			pdf.addPage();
+			const y = margin + Math.max(0, (contentHeight - imageHeight) / 2);
 
 			pdf.addImage(
-				dataUrl,
+				canvas.toDataURL("image/png"),
 				"PNG",
-				0,
-				position,
-				imageWidth,
+				margin,
+				y,
+				contentWidth,
 				imageHeight,
 				undefined,
-				"FAST",
+				"SLOW",
 			);
 
-			heightLeft -= pageHeight;
+			pdf.save(`${sanitizeFilename(filename)}.pdf`);
+
+			return;
+		}
+
+		let pageStart = 0;
+
+		while (pageStart < htmlHeight) {
+			const idealPageEnd = Math.min(pageStart + pageHeightInCssPx, htmlHeight);
+
+			let pageEnd = idealPageEnd;
+
+			if (idealPageEnd < htmlHeight) {
+				const candidates = safeBreaks.filter(
+					(point) => point > pageStart + 20 && point <= idealPageEnd,
+				);
+
+				if (candidates.length > 0) {
+					pageEnd = candidates[candidates.length - 1];
+				}
+			}
+
+			if (pageEnd <= pageStart) {
+				pageEnd = idealPageEnd;
+			}
+
+			const sliceHeightCss = pageEnd - pageStart;
+
+			const sourceY = Math.round(pageStart * scale);
+			const sourceHeight = Math.round(sliceHeightCss * scale);
+
+			const pageCanvas = document.createElement("canvas");
+
+			pageCanvas.width = canvas.width;
+			pageCanvas.height = sourceHeight;
+
+			const context = pageCanvas.getContext("2d");
+
+			if (!context) {
+				throw new Error("Unable to create PDF page canvas.");
+			}
+
+			context.drawImage(
+				canvas,
+
+				0,
+				sourceY,
+				canvas.width,
+				sourceHeight,
+
+				0,
+				0,
+				canvas.width,
+				sourceHeight,
+			);
+
+			const imageHeight = (sliceHeightCss / htmlWidth) * contentWidth;
+
+			if (pageStart > 0) {
+				pdf.addPage();
+			}
+
+			pdf.addImage(
+				pageCanvas.toDataURL("image/png"),
+				"PNG",
+				margin,
+				margin,
+				contentWidth,
+				imageHeight,
+				undefined,
+				"SLOW",
+			);
+
+			pageStart = pageEnd;
 		}
 
 		pdf.save(`${sanitizeFilename(filename)}.pdf`);
 	} catch (error) {
 		console.error("Failed to download PDF:", error);
+
 		toast.error("Failed to download PDF. Please try again.");
+
 		throw error;
 	}
 }
+
 // Generate Reference Number
 export function generateReference(type: string, date = new Date()): string {
 	const year = String(date.getFullYear()).slice(-2);

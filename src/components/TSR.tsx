@@ -7,7 +7,7 @@ import {
     formatCurrency,
     formatDate,
     formatOnlyDate,
-    toWords,
+    toCurrencyWords,
 } from "#/utils/format";
 import { downloadAsImage, downloadAsPdf, generateReference } from "#/utils/generate";
 import KeyValueBlock from "./KeyValueBlock";
@@ -17,9 +17,16 @@ import TankDetails from "./TankDetails";
 import { Button } from "./ui/button";
 
 const TSR = ({ tsr }: { tsr: TSR }) => {
+
+
     const docRef = useRef<HTMLDivElement | null>(null);
     const [downloading, setDownloading] = useState<"pdf" | "image" | "">("");
     const name = generateReference('RECEIPT')
+
+    const totalAmount = (tsr.lineItems || []).reduce(
+        (s, item) => s + (Number(item.amount) || 0),
+        0,
+    );
 
     // Download PDF
     const handleDownloadPdf = async () => {
@@ -118,7 +125,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                         <div>2900 - 201 Portage Avenue</div>
                         <div>Winnipeg MB R3B 3K6</div>
                         <div>Tel: 204-958-5315</div>
-                        <div>Email: info@bcwestterminals.ca</div>
+                        <div>Email: finance@bcwestterminals.ca</div>
                         <div>Co. Reg. No.(Numéro de la société): 341779-4</div>
                     </div>
                 </header>
@@ -197,11 +204,11 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                 <div className="flex justify-end mb-4">
                     <div className="flex items-center border border-border">
                         <div className="bg-muted/10 px-4 py-2 font-bold text-[11px] text-muted-foreground md:text-xs xl:text-sm uppercase tracking-wide">
-                            Total Paid ({tsr.currency})
+                            Total Amount Paid ({tsr.currency})
                         </div>
 
                         <div className="px-4 py-2 font-bold text-[11px] xl:text-[14px] md:text-xs">
-                            {formatCurrency(tsr.totalAmount)}
+                            {formatCurrency(totalAmount)}
                         </div>
                     </div>
                 </div>
@@ -226,7 +233,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                         </div>
 
                         <div className="px-3 py-2 font-medium text-[10px] text-muted-foreground md:text-[11px] xl:text-xs capitalize">
-                            {toWords(tsr.totalAmount)} {tsr.currency}
+                            {toCurrencyWords(totalAmount)}
                         </div>
                     </div>
                 </section>
@@ -257,7 +264,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                         </div>
 
                         <div className="text-right">
-                            {tsr.signatureUrl.trim() ? (
+                            {tsr.signatureUrl.trim() && (
                                 <img
                                     src={tsr.signatureUrl}
                                     alt="Signature"
@@ -266,19 +273,17 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
                                         objectFit: "contain",
                                     }}
                                 />
-                            ) : (
-                                <div className="mb-1 ml-auto h-12" />
                             )}
 
                             <div className="space-y-0.5 pt-1 border-border border-t">
                                 <p>
                                     <span className="font-semibold text-foreground">Name:</span>{" "}
-                                    {tsr.signatureName || "Micheal Boroughs"}
+                                    {tsr.signatureName || ""}
                                 </p>
 
                                 <p>
                                     <span className="font-semibold text-foreground">Title:</span>{" "}
-                                    {tsr.signatureTitle || "Terminal Manager"}
+                                    {tsr.signatureTitle || ""}
                                 </p>
                             </div>
                         </div>
@@ -419,7 +424,7 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
             </main>
 
             {/* Downloading PDF */}
-            <section ref={docRef} className={`${downloading === "pdf" ? "block" : "hidden"} w-full min-w-300`}>
+            <section ref={docRef} className={`${downloading === "pdf" || downloading === "image" ? "block" : "hidden"} w-full min-w-300`}>
                 <TSRPdf tsr={tsr} />
             </section>
         </>

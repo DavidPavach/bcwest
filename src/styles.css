@@ -323,6 +323,11 @@
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
+.pdf-keep-together {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
 @layer base {
   body {
     @apply bg-background font-body text-foreground;

@@ -84,7 +84,6 @@ export const CreateTsrPayloadSchema = z.object({
 		.array(TsrLineItemSchema)
 		.min(1, "Must have at least one line item"),
 	tankDetails: z.array(TankDetailsSchema).optional(),
-	totalAmount: z.number().positive(),
 	signatureUrl: z.url(),
 	signatureName: z.string(),
 	signatureTitle: z.string(),

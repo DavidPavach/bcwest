@@ -23,7 +23,6 @@ const emptyForm = {
     storageSummary: {},
     lineItems: [{ description: "", quantityText: "", rateText: "", amount: 0 }],
     tankDetails: [],
-    totalAmount: 0,
     signatureUrl: "",
     signatureName: "",
     signatureTitle: "",
@@ -55,7 +54,7 @@ const Form = ({ id, oldTsr, isNew = true, onClose }: FormProps) => {
             | number
             | string
             | Record<string, number | string>
-            | TsrItem[]
+            | TsrLineItem[]
             | TsrTank[],
     ) => setForm((f) => ({ ...f, [field]: value }));
     const togglePreview = () => setPreview((prev) => !prev);
@@ -267,7 +266,7 @@ const Form = ({ id, oldTsr, isNew = true, onClose }: FormProps) => {
                     <div className="flex justify-end mt-4 pt-3 border-border border-t">
                         <div className="flex items-center gap-3">
                             <span className="font-mono text-[10px] md:text-[11px] xl:text-xs uppercase tracking-wider">
-                                Total Amount:
+                                Total Amount Paid:
                             </span>
                             <span className="font-mono font-bold text-base md:text-lg xl:text-xl">
                                 {totalAmount.toLocaleString()} {form.currency}
@@ -284,15 +283,6 @@ const Form = ({ id, oldTsr, isNew = true, onClose }: FormProps) => {
                     />
                 </SectionCard>
 
-                <div className="space-y-1 p-2 md:p-3 xl:p-4">
-                    <Label htmlFor="totalAmount">Total Amount</Label>
-                    <Input
-                        id="totalAmount"
-                        type="number"
-                        value={form.totalAmount}
-                        onChange={(e) => set("totalAmount", parseInt(e.target.value, 10))}
-                    />
-                </div>
             </section>
             <Button
                 type="button"

@@ -1,7 +1,7 @@
 import { formatCurrency } from "#/utils/format";
 
 type LineItemsProps = {
-    items: TsrItem[];
+    items: TsrLineItem[];
     currency: string;
     nonResponsive?: boolean;
 };
@@ -12,12 +12,12 @@ export default function LineItems({
     nonResponsive = false,
 }: LineItemsProps) {
     const headerClassName = nonResponsive
-        ? "px-3 py-2 bg-muted/10 font-bold text-sm uppercase tracking-wide text-center"
-        : "px-3 py-2 bg-muted/10 font-bold text-[11px] md:text-xs xl:text-sm uppercase tracking-wide text-center";
+        ? "px-3 py-2 bg-muted/10 font-bold text-sm uppercase tracking-wide"
+        : "px-3 py-2 bg-muted/10 font-bold text-[11px] md:text-xs xl:text-sm uppercase tracking-wide";
 
     const rowClassName = nonResponsive
-        ? "*:px-3 *:py-2 *:text-xs *:text-center *:border-border *:border"
-        : "*:px-3 *:py-2 *:text-[10px] md:*:text-[11px] xl:*:text-xs *:text-center *:border-border *:border";
+        ? "*:px-3 *:py-2 *:text-xs *:border-border *:border"
+        : "*:px-3 *:py-2 *:text-[10px] md:*:text-[11px] xl:*:text-xs *:border-border *:border";
 
     const descriptionClassName = nonResponsive
         ? "px-3 py-2 text-xs"
@@ -37,11 +37,7 @@ export default function LineItems({
                         ].map((header, index) => (
                             <th
                                 key={header}
-                                className={`${headerClassName} ${index < 4
-                                    ? "border-r border-border"
-                                    : ""
-                                    }`}
-                            >
+                                className={`${headerClassName} ${index < 3 ? "text-left" : "text-right"} ${index < 4 ? "border-r border-border" : ""}`}>
                                 {header}
                             </th>
                         ))}
@@ -53,9 +49,8 @@ export default function LineItems({
                         <tr
                             // biome-ignore lint/suspicious/noArrayIndexKey: <>
                             key={`line_item_${index}`}
-                            className={`${rowClassName} ${index % 2 === 0 ? "bg-muted/10" : ""
-                                }`}
-                        >
+                            className={`${rowClassName} ${index % 2 === 0 ? "bg-muted/10" : ""}`}>
+
                             <td>{index + 1}</td>
 
                             <td className={descriptionClassName}>
@@ -64,11 +59,9 @@ export default function LineItems({
 
                             <td>{item.quantityText}</td>
 
-                            <td>{item.rateText}</td>
+                            <td className="text-right">{item.rateText}</td>
 
-                            <td className="text-right">
-                                {formatCurrency(item.amount)}
-                            </td>
+                            <td className="text-right">{formatCurrency(item.amount)}</td>
                         </tr>
                     ))}
                 </tbody>

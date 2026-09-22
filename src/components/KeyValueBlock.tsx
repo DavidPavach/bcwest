@@ -29,28 +29,13 @@ export default function KeyValueBlock({
 
             <div className="flex flex-col">
                 {entries.map(([key, value], idx) => (
-                    <div
-                        key={key}
-                        className={`${idx === 0 ? "" : "border-t border-border"} ${idx % 2 === 0 ? "bg-muted/10" : ""
-                            } ${rowClassName}`}
-                    >
-                        <span
-                            className={
-                                nonResponsive
-                                    ? "w-1/5 font-semibold text-muted-foreground shrink-0"
-                                    : "md:w-1/5 font-semibold text-muted-foreground shrink-0"
-                            }
-                        >
-                            {key} :
+                    <div key={key}
+                        className={`${idx === 0 ? "" : "border-t border-border"} ${idx % 2 === 0 ? "bg-muted/10" : ""} ${rowClassName}`}>
+                        <span className={`w-2/5 font-semibold text-muted-foreground`}>
+                            {key}
                         </span>
 
-                        <span
-                            className={
-                                nonResponsive
-                                    ? "ml-1 w-4/5"
-                                    : "ml-1 md:w-4/5"
-                            }
-                        >
+                        <span className={"ml-1 w-3/5"}>
                             {value}
                         </span>
                     </div>

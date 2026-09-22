@@ -27,9 +27,26 @@ export function mapAppwriteRow<T>(row: any): T & {
 }
 
 // Get the word version of a number
-export const toWords = (value: number): string => {
-	const inWords = converter.toWords(value);
-	return inWords;
+export const toCurrencyWords = (value: number | string): string => {
+	const input =
+		typeof value === "number"
+			? value.toFixed(2)
+			: value.replace(/,/g, "").trim();
+
+	if (!/^-?\d+(\.\d{1,2})?$/.test(input)) {
+		throw new Error(`Invalid currency value: ${value}`);
+	}
+
+	const isNegative = input.startsWith("-");
+	const unsignedInput = isNegative ? input.slice(1) : input;
+	const [dollars, cents = "00"] = unsignedInput.split(".");
+	const normalizedCents = cents.padEnd(2, "0");
+
+	const result =
+		`${converter.toWords(Number(dollars))} dollars and ` +
+		`${converter.toWords(Number(normalizedCents))} cents`;
+
+	return isNegative ? `minus ${result}` : result;
 };
 
 // Parse Strings Back to Objects

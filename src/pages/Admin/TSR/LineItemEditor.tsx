@@ -5,8 +5,8 @@ import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 
 type ItemProps = {
-    items: TsrItem[];
-    onChange: (items: TsrItem[]) => void;
+    items: TsrLineItem[];
+    onChange: (items: TsrLineItem[]) => void;
 };
 
 export default function LineItemsEditor({ items = [], onChange }: ItemProps) {
