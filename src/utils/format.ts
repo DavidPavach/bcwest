@@ -61,9 +61,17 @@ export function parsePayload(updates: any, jsonFields: any) {
 // Format Date and Time
 export const formatDate = (
 	dateInput: Date | string | number,
-	variant: "long" | "short" = "long",
+	variant: "long" | "short" | "date" = "long",
 ) => {
 	const date = new Date(dateInput);
+
+	if (variant === "date") {
+		return date.toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		});
+	}
 
 	if (variant === "short") {
 		const datePart = date.toLocaleDateString("en-US", {

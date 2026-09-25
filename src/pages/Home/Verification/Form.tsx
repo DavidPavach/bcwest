@@ -13,7 +13,7 @@ import { useDocument, useInvoice, useTSR } from "#/services/queries";
 
 const Form = ({ page }: { page: string }) => {
     const search = Route.useSearch();
-    const defaultCode = search.number;
+    const defaultCode = search.value;
 
     const [code, setCode] = useState<string>(defaultCode || "");
 

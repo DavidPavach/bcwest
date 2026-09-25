@@ -1,5 +1,4 @@
-import { toPng } from "html-to-image";
-import html2canvas from "html2canvas-pro";
+import { toJpeg, toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 import { toast } from "react-fox-toast";
 
@@ -16,63 +15,6 @@ export function getRequiredEnv(
 }
 
 // Helpers
-function getSafePageBreaks(element: HTMLElement): number[] {
-	const rootRect = element.getBoundingClientRect();
-	const rootWidth = element.scrollWidth;
-	const rootHeight = element.scrollHeight;
-
-	const breaks = new Set<number>();
-
-	// Always allow the beginning and end.
-	breaks.add(0);
-	breaks.add(rootHeight);
-
-	const descendants = Array.from(element.querySelectorAll<HTMLElement>("*"));
-
-	for (const child of descendants) {
-		const style = getComputedStyle(child);
-
-		if (style.display === "none" || style.visibility === "hidden") {
-			continue;
-		}
-
-		const rect = child.getBoundingClientRect();
-
-		if (!rect.width || !rect.height) {
-			continue;
-		}
-
-		const top = rect.top - rootRect.top;
-		const bottom = rect.bottom - rootRect.top;
-
-		if (bottom <= 0 || top >= rootHeight) {
-			continue;
-		}
-
-		const isBlockLike =
-			style.display === "block" ||
-			style.display === "flex" ||
-			style.display === "grid" ||
-			style.display === "table" ||
-			style.display === "table-row" ||
-			style.display === "list-item" ||
-			style.display === "flow-root";
-
-		const keepTogether =
-			style.breakInside === "avoid" ||
-			style.pageBreakInside === "avoid" ||
-			child.classList.contains("pdf-keep-together");
-
-		const isMeaningfulWidth = rect.width >= rootWidth * 0.35;
-
-		if ((isBlockLike && isMeaningfulWidth) || keepTogether) {
-			breaks.add(Math.round(bottom));
-		}
-	}
-
-	return [...breaks].sort((a, b) => a - b);
-}
-
 function sanitizeFilename(filename: string): string {
 	const controlChars = Array.from({ length: 32 }, (_, index) =>
 		String.fromCharCode(index),
@@ -167,196 +109,81 @@ export async function downloadAsImage(
 }
 
 // Download as PDF
-export async function downloadAsPdf(
-	element: HTMLElement,
-	filename: string,
-): Promise<void> {
+export async function downloadAsPdf(element: HTMLDivElement, filename: string) {
 	try {
 		await waitForAssets(element);
 
-		await new Promise<void>((resolve) => {
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => resolve());
-			});
+		const dataUrl = await toJpeg(element, {
+			cacheBust: true,
+			pixelRatio: 2,
+			quality: 1,
+			skipFonts: false,
 		});
 
-		const rect = element.getBoundingClientRect();
-
-		if (!rect.width || !rect.height) {
-			throw new Error("The document has no measurable dimensions.");
-		}
-
-		const htmlWidth = Math.ceil(
-			Math.max(element.scrollWidth, element.offsetWidth, rect.width),
-		);
-
-		const htmlHeight = Math.ceil(
-			Math.max(element.scrollHeight, element.offsetHeight, rect.height),
-		);
-
-		const orientation = htmlWidth >= htmlHeight ? "landscape" : "portrait";
-
 		const pdf = new jsPDF({
-			orientation,
+			orientation: "portrait",
 			unit: "mm",
 			format: "a4",
 			compress: true,
-			putOnlyUsedFonts: true,
-			floatPrecision: 16,
+		});
+
+		const img = new Image();
+
+		await new Promise<void>((resolve, reject) => {
+			img.onload = () => resolve();
+			img.onerror = reject;
+			img.src = dataUrl;
 		});
 
 		const pageWidth = pdf.internal.pageSize.getWidth();
 		const pageHeight = pdf.internal.pageSize.getHeight();
 
-		const margin = 4;
+		const imgWidth = pageWidth;
+		const imgHeight = (img.height * imgWidth) / img.width;
 
-		const contentWidth = pageWidth - margin * 2;
-		const contentHeight = pageHeight - margin * 2;
+		let heightLeft = imgHeight;
+		let position = 0;
 
-		const pageHeightInCssPx = (htmlWidth * contentHeight) / contentWidth;
+		pdf.addImage(
+			dataUrl,
+			"JPEG",
+			0,
+			position,
+			imgWidth,
+			imgHeight,
+			undefined,
+			"NONE",
+		);
 
-		const MAX_CANVAS_PIXELS = 40_000_000;
+		heightLeft -= pageHeight;
 
-		let scale = 3;
+		while (heightLeft > 0) {
+			position -= pageHeight;
 
-		const estimatedPixels = htmlWidth * htmlHeight * scale * scale;
-
-		if (estimatedPixels > MAX_CANVAS_PIXELS) {
-			scale = Math.sqrt(MAX_CANVAS_PIXELS / (htmlWidth * htmlHeight));
-		}
-
-		scale = Math.max(1, scale);
-
-		const computedStyles = getComputedStyle(element);
-
-		const backgroundColor =
-			computedStyles.backgroundColor === "transparent" ||
-			computedStyles.backgroundColor === "rgba(0, 0, 0, 0)"
-				? "#ffffff"
-				: computedStyles.backgroundColor;
-
-		const canvas = await html2canvas(element, {
-			scale,
-
-			backgroundColor,
-
-			useCORS: true,
-			allowTaint: false,
-
-			imageTimeout: 30_000,
-
-			logging: false,
-
-			scrollX: 0,
-			scrollY: 0,
-
-			windowWidth: htmlWidth,
-			windowHeight: htmlHeight,
-		});
-
-		const safeBreaks = getSafePageBreaks(element);
-
-		if (htmlHeight <= pageHeightInCssPx + 1) {
-			const imageHeight = (htmlHeight / htmlWidth) * contentWidth;
-
-			const y = margin + Math.max(0, (contentHeight - imageHeight) / 2);
+			pdf.addPage();
 
 			pdf.addImage(
-				canvas.toDataURL("image/png"),
-				"PNG",
-				margin,
-				y,
-				contentWidth,
-				imageHeight,
+				dataUrl,
+				"JPEG",
+				0,
+				position,
+				imgWidth,
+				imgHeight,
 				undefined,
-				"SLOW",
+				"NONE",
 			);
 
-			pdf.save(`${sanitizeFilename(filename)}.pdf`);
-
-			return;
+			heightLeft -= pageHeight;
 		}
 
-		let pageStart = 0;
-
-		while (pageStart < htmlHeight) {
-			const idealPageEnd = Math.min(pageStart + pageHeightInCssPx, htmlHeight);
-
-			let pageEnd = idealPageEnd;
-
-			if (idealPageEnd < htmlHeight) {
-				const candidates = safeBreaks.filter(
-					(point) => point > pageStart + 20 && point <= idealPageEnd,
-				);
-
-				if (candidates.length > 0) {
-					pageEnd = candidates[candidates.length - 1];
-				}
-			}
-
-			if (pageEnd <= pageStart) {
-				pageEnd = idealPageEnd;
-			}
-
-			const sliceHeightCss = pageEnd - pageStart;
-
-			const sourceY = Math.round(pageStart * scale);
-			const sourceHeight = Math.round(sliceHeightCss * scale);
-
-			const pageCanvas = document.createElement("canvas");
-
-			pageCanvas.width = canvas.width;
-			pageCanvas.height = sourceHeight;
-
-			const context = pageCanvas.getContext("2d");
-
-			if (!context) {
-				throw new Error("Unable to create PDF page canvas.");
-			}
-
-			context.drawImage(
-				canvas,
-
-				0,
-				sourceY,
-				canvas.width,
-				sourceHeight,
-
-				0,
-				0,
-				canvas.width,
-				sourceHeight,
-			);
-
-			const imageHeight = (sliceHeightCss / htmlWidth) * contentWidth;
-
-			if (pageStart > 0) {
-				pdf.addPage();
-			}
-
-			pdf.addImage(
-				pageCanvas.toDataURL("image/png"),
-				"PNG",
-				margin,
-				margin,
-				contentWidth,
-				imageHeight,
-				undefined,
-				"SLOW",
-			);
-
-			pageStart = pageEnd;
-		}
-
-		pdf.save(`${sanitizeFilename(filename)}.pdf`);
+		pdf.save(`${filename}.pdf`);
 	} catch (error) {
+		toast.error("Failed to download PDF, please try again.");
 		console.error("Failed to download PDF:", error);
-
-		toast.error("Failed to download PDF. Please try again.");
-
 		throw error;
 	}
 }
+
 
 // Generate Reference Number
 export function generateReference(type: string, date = new Date()): string {
