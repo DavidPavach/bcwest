@@ -18,7 +18,7 @@ type UrlQrCodeProps = {
 };
 
 export function UrlQrCode({ url }: UrlQrCodeProps) {
-    return <QRCodeSVG value={url} size={60} marginSize={2} />;
+    return <QRCodeSVG value={url} size={80} marginSize={2} />;
 }
 
 const Invoice = ({ invoice }: { invoice: Invoice }) => {
