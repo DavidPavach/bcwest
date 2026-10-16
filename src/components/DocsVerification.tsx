@@ -1,242 +1,341 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { FolderOpen, TickCircle } from "iconsax-reactjs";
+import { FolderOpen } from "iconsax-reactjs";
 import { useCallback, useEffect, useState } from "react";
 
 import Document from "./Document";
-import RadarVisual from "./RadarVisual";
 import { Button } from "./ui/button";
 
 const VERIFICATION_STEPS = [
-    { label: "Reading QR payload", delay: 300 },
-    { label: "Connecting to registry", delay: 650 },
-    { label: "Matching certificate hash", delay: 650 },
-    { label: "Confirming issuer signature", delay: 600 },
+	{ label: "Reference lookup", delay: 680 },
+	{ label: "Integrity assessment", delay: 680 },
+	{ label: "Issuance authorization", delay: 680 },
+	{ label: "Current status review", delay: 680 },
 ];
 
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const wait = (ms: number) =>
+	new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 function MetaRow({
-    label,
-    value,
-    accent,
+	label,
+	value,
+	accent = false,
 }: {
-    label: string;
-    value: string;
-    accent?: boolean;
+	label: string;
+	value: string;
+	accent?: boolean;
 }) {
-    return (
-        <div className="flex justify-between mb-1.25 font-mono text-[9px] md:text-[10px] xl:text-[11px]">
-            <span style={{ color: "hsl(215 12% 35%)" }}>{label}</span>
-            <span style={{ color: accent ? "var(--teal)" : "hsl(215 12% 55%)" }}>
-                {value}
-            </span>
-        </div>
-    );
+	return (
+		<div className="mb-2 flex justify-between gap-3 font-mono text-[9px] md:text-[10px] xl:text-[11px]">
+			<span className="text-[#596b75]">{label}</span>
+			<span
+				className={`break-all text-right ${accent ? "text-[#267b63]" : "text-[#74818a]"}`}
+			>
+				{value}
+			</span>
+		</div>
+	);
 }
 
-function CornerTicks() {
-    return (
-        <>
-            <span
-                className="top-2 left-2 absolute border-green-500 border-t-2 border-l-2 rounded-tl size-3 md:size-3.5 xl:size-4"
-            />
-            <span
-                className="top-2 right-2 absolute border-green-500 border-t-2 border-r-2 rounded-tr size-3 md:size-3.5 xl:size-4"
-            />
-            <span
-                className="bottom-2 left-2 absolute border-green-500 border-b-2 border-l-2 rounded-bl size-3 md:size-3.5 xl:size-4"
-            />
-            <span
-                className="right-2 bottom-2 absolute border-green-500 border-r-2 border-b-2 rounded-br size-3 md:size-3.5 xl:size-4"
-            />
-        </>
-    );
+function ScanCorners() {
+	return (
+		<>
+			<span className="absolute left-3 top-3 size-4 border-l-2 border-t-2 border-[#c6b38e]" />
+			<span className="absolute bottom-3 right-3 size-4 border-b-2 border-r-2 border-[#c6b38e]" />
+		</>
+	);
 }
 
 const DocsVerification = ({ doc }: { doc: Documents }) => {
-    const [stage, setStage] = useState<string>("idle");
-    const [visibleSteps, setVisibleSteps] = useState<number>(0);
-    const [completedSteps, setCompletedSteps] = useState<number>(0);
-    const [issuedDate, setIssuedDate] = useState("--");
-    const [clock, setClock] = useState("--:--:--");
-    const [view, setView] = useState<boolean>(false);
+	const [stage, setStage] = useState<
+		"idle" | "scanning" | "verifying" | "verified"
+	>("idle");
+	const [activeStep, setActiveStep] = useState(-1);
+	const [completedSteps, setCompletedSteps] = useState(0);
+	const [issuedDate, setIssuedDate] = useState("--");
+	const [clock, setClock] = useState("--:--:--");
+	const [view, setView] = useState(false);
 
-    const verificationId = doc.documentNumber;
+	const verificationId = doc.documentNumber;
 
-    // Live clock
-    useEffect(() => {
-        const update = () => setClock(new Date().toTimeString().slice(0, 8));
-        update();
-        const id = setInterval(update, 1000);
-        return () => clearInterval(id);
-    }, []);
+	// Live clock
+	useEffect(() => {
+		const update = () => setClock(new Date().toTimeString().slice(0, 8));
+		update();
 
-    const runFlow = useCallback(async () => {
-        setStage("scanning");
-        setVisibleSteps(0);
-        setCompletedSteps(0);
-        setIssuedDate("--");
+		const id = setInterval(update, 1000);
+		return () => clearInterval(id);
+	}, []);
 
-        for (let i = 0; i < VERIFICATION_STEPS.length; i++) {
-            await wait(VERIFICATION_STEPS[i].delay);
-            setVisibleSteps(i + 1);
-            await wait(120);
-            setCompletedSteps(i + 1);
-        }
+	const runFlow = useCallback(async () => {
+		setStage("scanning");
+		setActiveStep(-1);
+		setCompletedSteps(0);
+		setIssuedDate("--");
 
-        setStage("verifying");
-        await wait(550);
+		for (let i = 0; i < VERIFICATION_STEPS.length; i++) {
+			setActiveStep(i);
+			await wait(VERIFICATION_STEPS[i].delay);
+			setCompletedSteps(i + 1);
+			await wait(160);
+		}
 
-        setStage("verified");
-        setIssuedDate(
-            new Date().toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-            }),
-        );
-    }, []);
+		setStage("verifying");
+		await wait(550);
 
-    // Auto-run on mount
-    useEffect(() => {
-        const timer = setTimeout(runFlow, 500);
-        return () => clearTimeout(timer);
-    }, [runFlow]);
+		setStage("verified");
+		setIssuedDate(
+			new Date().toLocaleDateString("en-GB", {
+				day: "2-digit",
+				month: "short",
+				year: "numeric",
+			}),
+		);
+	}, []);
 
-    const isVerified = stage === "verified";
-    const isScanning = stage === "scanning";
+	// Auto-run on mount
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			void runFlow();
+		}, 500);
 
-    const statusTitle = isVerified
-        ? "VERIFIED AUTHENTIC"
-        : stage === "verifying"
-            ? "VERIFYING"
-            : isScanning
-                ? "SCANNING"
-                : "INITIALIZING";
+		return () => clearTimeout(timer);
+	}, [runFlow]);
 
-    const statusSub = isVerified
-        ? "Document Number matches issuing record"
-        : stage === "verifying"
-            ? "Cross-checking issuing authority…"
-            : "Reading secure tag…";
+	const isVerified = stage === "verified";
+	const isScanning = stage === "scanning";
+	const isProcessing = isScanning || stage === "verifying";
 
-    const toggleView = () => setView((prev) => !prev);
+	const statusTitle = isVerified
+		? "RECORD VERIFIED"
+		: stage === "verifying"
+			? "FINAL REVIEW"
+			: isScanning
+				? "AUTHENTICATING RECORD"
+				: "READY FOR VERIFICATION";
 
-    return (
-        <>
-            {view ?
-                <Document doc={doc} /> :
-                <div className="relative flex justify-center items-center px-5 py-12 xl:w-120 md:w-md min-w-96 overflow-hidden">
+	const statusSub = isVerified
+		? "Document number matches the issuing record"
+		: stage === "verifying"
+			? "Completing the registry assessment…"
+			: isScanning
+				? "Checking the document against registry records…"
+				: "The authentication sequence will begin shortly.";
 
-                    <div className="z-5 relative w-full">
-                        {/* Eyebrow */}
-                        <div className="flex justify-between items-center mb-3.5 px-0.5">
-                            <span className="flex items-center gap-1.5 font-mono text-[10.5px] text-muted-foreground uppercase tracking-wide">
-                                <span
-                                    className="bg-teal rounded-full size-1 md:size-1.5 xl:size-2 animate-pulse-dot"
-                                    style={{ boxShadow: "0 0 8px var(--teal)" }}
-                                />
-                                SECURE VERIFICATION
-                            </span>
-                            <span className="font-mono text-[10.5px] text-muted-foreground tracking-wide">
-                                {clock}
-                            </span>
-                        </div>
+	const scanText =
+		stage === "verifying"
+			? "FINALIZING ASSESSMENT"
+			: activeStep >= 0
+				? VERIFICATION_STEPS[activeStep].label.toUpperCase()
+				: "INITIALIZING LOOKUP";
 
-                        {/* Card */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="relative flex flex-col p-4 md:p-6 xl:p-8 border border-border min-h-107.5 overflow-hidden"
-                            style={{
-                                background:
-                                    "linear-gradient(180deg, hsl(225 20% 11%) 0%, hsl(220 18% 9%) 100%)",
-                                boxShadow:
-                                    "0 30px 60px -20px rgba(0,0,0,0.7), 0 0 80px -20px hsl(var(--teal) / 0.08)",
-                            }}
-                        >
-                            <CornerTicks />
-                            <div className="absolute inset-2.5 border border-teal/12 rounded-[14px] pointer-events-none" />
+	const stageStatus = isVerified
+		? "Assessment complete"
+		: isProcessing
+			? "Processing request"
+			: "Awaiting reference";
 
-                            <RadarVisual stage={stage} />
+	const toggleView = () => setView((prev) => !prev);
 
-                            {/* Status */}
-                            <div className="mb-4 min-h-13.5 text-center">
-                                <h3
-                                    className={`${isVerified ? "text-teal" : "text-muted-foreground"} font-display font-bold text-base tracking-wide transition-colors duration-300`}
-                                >
-                                    {statusTitle}
-                                </h3>
-                                <p
-                                    className={`font-mono text-[10.5px] tracking-wide mt-1.5 h-3.5`}
-                                    style={{ color: "hsl(215 12% 35%)" }}
-                                >
-                                    {statusSub}
-                                </p>
-                            </div>
+	return (
+		<>
+			{view ? (
+				<Document doc={doc} />
+			) : (
+				<div className="relative flex items-center justify-center overflow-hidden px-5 py-12 min-w-96">
+					<div className="relative z-5 w-full">
+						{/* Registry header */}
+						<div className="mb-3.5 flex items-center justify-between px-0.5">
+							<span className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-wide text-[#74818a]">
+								<span
+									className="size-1.5 rounded-full bg-[#267b63]"
+									style={{ boxShadow: "0 0 8px rgba(38, 123, 99, 0.45)" }}
+								/>
+								Secure verification
+							</span>
+							<span className="font-mono text-[10.5px] tracking-wide text-[#74818a]">
+								{clock}
+							</span>
+						</div>
 
-                            {/* Log lines */}
-                            <div className="flex flex-col flex-1 gap-1.75 mb-2 min-h-19.5">
-                                {VERIFICATION_STEPS.map((step, i) => {
-                                    const visible = i < visibleSteps;
-                                    const done = i < completedSteps;
-                                    return (
-                                        <div
-                                            key={step.label}
-                                            className="flex items-center gap-x-2 font-mono text-[10.5px] transition-all duration-300"
-                                            style={{
-                                                color: "hsl(215 12% 55%)",
-                                                opacity: visible ? 1 : 0,
-                                                transform: visible ? "translateY(0)" : "translateY(4px)",
-                                            }}
-                                        >
-                                            <TickCircle variant="Bold" className={`${done ? "text-green-500" : ""} left-0.75 size-4`} />
-                                            <p>{step.label}</p>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+						{/* Verification workspace */}
+						<motion.div
+							initial={{ opacity: 0, y: 12 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.4 }}
+							className="flex min-h-107.5 flex-col overflow-hidden border border-[#e2e6e6] bg-white p-4 shadow-[0_12px_35px_rgba(20,43,52,0.025)] md:p-6 xl:p-8"
+						>
+							<div className="mb-5 text-center">
+								<h3
+									className={`font-display text-base font-bold tracking-wide transition-colors duration-300 ${isVerified ? "text-[#267b63]" : "text-[#122c3a]"}`}
+								>
+									{statusTitle}
+								</h3>
+								<p className="mt-1.5 min-h-4 font-mono text-[10px] leading-relaxed tracking-wide text-[#7d8c93] md:text-[10.5px]">
+									{statusSub}
+								</p>
+							</div>
 
-                            {/* Meta + Actions (revealed on verified) */}
-                            <AnimatePresence>
-                                {isVerified && (
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ duration: 0.5, delay: 0.15 }}
-                                        className="mt-auto"
-                                    >
-                                        <div className="pt-3.5 border-border border-t">
-                                            <MetaRow label="Number of Documents" value={`${doc.images.length}`} />
-                                            <MetaRow
-                                                label="Verification ID"
-                                                value={verificationId}
-                                                accent
-                                            />
-                                            <MetaRow label="View Date" value={issuedDate} />
-                                        </div>
+							{/* Initial state */}
+							{!isProcessing && !isVerified && (
+								<div className="flex min-h-56.25 flex-col items-center justify-center text-center">
+									<div className="relative mb-5 h-17.5 w-14.5 border border-[#d4dfe0]">
+										<span className="absolute right-0 top-0 border-l-16 border-t-16 border-l-transparent border-t-[#e9eeee]" />
+										<span className="absolute left-4.25 top-6.25 text-lg text-[#9db0b7]">
+											✓
+										</span>
+									</div>
+									<h4 className="mb-2 text-[15px] font-semibold text-[#526773]">
+										Ready for verification
+									</h4>
+									<p className="max-w-75 text-xs leading-relaxed text-[#97a2a7]">
+										The document reference is ready for the authentication
+										sequence.
+									</p>
+								</div>
+							)}
 
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.5, delay: 0.35 }}
-                                            className="flex gap-2 mt-4"
-                                        >
-                                            <Button onClick={toggleView} className="w-full text-[10px] md:text-[11px] xl:text-xs">
-                                                <FolderOpen className="size-3 md:size-3.5 xl:size-4" />
-                                                View Documents
-                                            </Button>
-                                        </motion.div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </motion.div>
-                    </div>
-                </div>
-            }
-        </>
-    );
+							{/* Scanning animation adapted from the HTML prototype */}
+							{isProcessing && (
+								<div className="mb-6">
+									<div
+										className="relative mb-5.75 flex h-25 items-center justify-center overflow-hidden border border-[#edf0ef]"
+										style={{
+											backgroundImage:
+												"linear-gradient(90deg, #f7f9f8 1px, transparent 1px), linear-gradient(#f7f9f8 1px, transparent 1px)",
+											backgroundSize: "21px 21px",
+										}}
+									>
+										<ScanCorners />
+										<motion.div
+											aria-hidden="true"
+											initial={{ left: "-5%" }}
+											animate={{ left: ["-5%", "105%"] }}
+											transition={{
+												duration: 1.7,
+												ease: "easeInOut",
+												repeat: Infinity,
+												repeatType: "reverse",
+											}}
+											className="absolute bottom-0 top-0 w-0.5 bg-[#b9a47c]"
+											style={{
+												boxShadow: "0 0 19px 6px rgba(200, 180, 134, 0.2)",
+											}}
+										/>
+										<span className="relative z-1 bg-white/85 px-3.75 py-2 font-mono text-xs tracking-[0.17em] text-[#6b7e84]">
+											{scanText}
+										</span>
+									</div>
+
+									<div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+										{VERIFICATION_STEPS.map((step, i) => {
+											const done = i < completedSteps;
+											const active = i === activeStep && !done;
+											const progress = done
+												? "COMPLETE"
+												: active
+													? "CHECKING"
+													: "PENDING";
+
+											return (
+												<div
+													key={step.label}
+													className={`min-h-17.5 border-t-2 pt-3 transition-colors duration-200 ${
+														done
+															? "border-[#287d63]"
+															: active
+																? "border-[#b9a47c]"
+																: "border-[#e4e9e9]"
+													}`}
+												>
+													<div className="mb-2 text-[10px] tracking-[0.14em] text-[#9aa7ad]">
+														{`0${i + 1} / ${progress}`}
+													</div>
+													<div
+														className={`text-[11px] leading-relaxed ${
+															done
+																? "font-medium text-[#287d63]"
+																: active
+																	? "font-bold text-[#263f4d]"
+																	: "text-[#89979d]"
+														}`}
+													>
+														{step.label}
+													</div>
+												</div>
+											);
+										})}
+									</div>
+								</div>
+							)}
+
+							{isVerified && (
+								<div className="flex min-h-56.25 flex-col items-center justify-center text-center">
+									<div className="relative mb-5 h-17.5 w-14.5 border border-[#d4dfe0]">
+										<span className="absolute right-0 top-0 border-l-16 border-t-16 border-l-transparent border-t-[#e9eeee]" />
+										<span className="absolute left-4.25 top-6.25 text-lg text-green-500">
+											✓
+										</span>
+									</div>
+									<h4 className="mb-2 text-[15px] font-semibold text-[#526773]">
+										Record verified
+									</h4>
+									<p className="max-w-75 text-xs leading-relaxed text-[#97a2a7]">
+										Authenticated registry entry
+									</p>
+								</div>
+							)}
+
+							{/* Verified metadata and document-view action */}
+							<AnimatePresence>
+								{isVerified && (
+									<motion.div
+										initial={{ opacity: 0, y: 8 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: 4 }}
+										transition={{ duration: 0.4, delay: 0.1 }}
+										className="mt-auto"
+									>
+										<div className="border-t border-[#e7eaea] pt-3.5">
+											<MetaRow
+												label="Number of Documents"
+												value={`${doc.images.length}`}
+											/>
+											<MetaRow
+												label="Verification ID"
+												value={verificationId}
+												accent
+											/>
+											<MetaRow label="View Date" value={issuedDate} />
+										</div>
+
+										<motion.div
+											initial={{ opacity: 0, y: 8 }}
+											animate={{ opacity: 1, y: 0 }}
+											transition={{ duration: 0.4, delay: 0.2 }}
+											className="mt-4 flex gap-2"
+										>
+											<Button
+												onClick={toggleView}
+												className="w-full text-[10px] md:text-[11px] xl:text-xs"
+											>
+												<FolderOpen className="size-3 md:size-3.5 xl:size-4" />
+												View Documents
+											</Button>
+										</motion.div>
+									</motion.div>
+								)}
+							</AnimatePresence>
+						</motion.div>
+
+						<div className="mt-3 flex justify-between gap-3 px-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-[#a1aaad]">
+							<span>Document registry</span>
+							<span>{stageStatus}</span>
+						</div>
+					</div>
+				</div>
+			)}
+		</>
+	);
 };
 
 export default DocsVerification;
