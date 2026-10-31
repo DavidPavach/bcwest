@@ -37,69 +37,73 @@ export default function TankDetails({
         : "bg-muted/10 *:px-3 *:py-1.5 *:border *:border-border *:font-bold *:text-[10px] md:*:text-[11px] xl:*:text-xs";
 
     return (
-        <div>
-            <table className="w-full">
-                <thead className="bg-muted">
-                    <tr>
-                        <th colSpan={5} className={titleClassName}>
-                            Tank Details
-                        </th>
-                    </tr>
+					<div>
+						<table className="w-full">
+							<thead className="bg-muted">
+								<tr>
+									<th colSpan={5} className={titleClassName}>
+										Tank Details
+									</th>
+								</tr>
 
-                    <tr>
-                        {[
-                            "Tank No.",
-                            "GPS Coordinates",
-                            "Product",
-                            "Capacity (MT)",
-                            "Ullage (MT)",
-                        ].map((header, index) => (
-                            <th key={header}
-                                className={`${columnHeaderClassName} ${index < 2 ? "text-left" : "text-right"} ${index < 3 ? "border border-border" : ""}`}>
-                                {header}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
+								<tr>
+									{[
+										"Tank No.",
+										"GPS Coordinates",
+										"Product",
+										"Capacity (MT)",
+										"Ullage (M³)",
+									].map((header, index) => (
+										<th
+											key={header}
+											className={`${columnHeaderClassName} ${index < 2 ? "text-left" : "text-right"} ${index < 3 ? "border border-border" : ""}`}
+										>
+											{header}
+										</th>
+									))}
+								</tr>
+							</thead>
 
-                <tbody>
-                    {tanks.map((tank, index) => (
-                        <tr
-                            // biome-ignore lint/suspicious/noArrayIndexKey: <>
-                            key={`tanks_details_${index}`}
-                            className={rowClassName}
-                        >
-                            <td>{tank.tankNo}</td>
+							<tbody>
+								{tanks.map((tank, index) => (
+									<tr
+										// biome-ignore lint/suspicious/noArrayIndexKey: <>
+										key={`tanks_details_${index}`}
+										className={rowClassName}
+									>
+										<td>{tank.tankNo}</td>
 
-                            <td>{tank.coordinates}</td>
+										<td>{tank.coordinates}</td>
 
-                            <td className="text-right">{tank.product}</td>
+										<td className="text-right">{tank.product}</td>
 
-                            <td className="text-right">
-                                {tank.capacity.toLocaleString("en-US")}
-                            </td>
+										<td className="text-right">
+											{tank.capacity.toLocaleString("en-US")}
+										</td>
 
-                            <td className="text-right">
-                                {tank.ullage.toLocaleString("en-US", { minimumFractionDigits: 3 })}
-                            </td>
-                        </tr>
-                    ))}
+										<td className="text-right">
+											{tank.ullage.toLocaleString("en-US", {
+												minimumFractionDigits: 3,
+											})}
+										</td>
+									</tr>
+								))}
 
-                    <tr className={totalRowClassName}>
-                        <td colSpan={3}>Total Capacity</td>
+								<tr className={totalRowClassName}>
+									<td colSpan={3}>Total Capacity</td>
 
-                        <td className="text-right">
-                            {totalCapacity.toLocaleString("en-US")}
-                        </td>
+									<td className="text-right">
+										{totalCapacity.toLocaleString("en-US")}
+									</td>
 
-                        <td className="text-right">
-                            {totalUllage.toLocaleString("en-US", {
-                                minimumFractionDigits: 3,
-                            })}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    );
+									<td className="text-right">
+										{totalUllage.toLocaleString("en-US", {
+											minimumFractionDigits: 3,
+										})}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				);
 }

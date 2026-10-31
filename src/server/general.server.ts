@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <> */
-import { Client, ID, TablesDB } from "node-appwrite";
+import { Client, ID, Query, TablesDB } from "node-appwrite";
 
 import { mapAppwriteRow, parsePayload } from "#/utils/format";
 import { getRequiredEnv } from "#/utils/generate";
@@ -300,7 +300,7 @@ export async function createTsrRecord(data: CreateTsrPayload) {
 	const response = await db.createRow({
 		databaseId: DATABASE_ID,
 		tableId: TSRs_ID,
-		rowId: data.tsrNumber,
+		rowId: ID.unique(),
 		data: payload,
 	});
 
@@ -308,19 +308,19 @@ export async function createTsrRecord(data: CreateTsrPayload) {
 }
 
 // Get TSR
-export async function getTsrRecord(tsrId: string) {
+export async function getTsrRecord(tsrNumber: string) {
 	const db = getAppwriteDb();
-	const row = await db.getRow({
+
+	const response = await db.listRows({
 		databaseId: DATABASE_ID,
 		tableId: TSRs_ID,
-		rowId: tsrId,
+		queries: [Query.equal("tsrNumber", tsrNumber)],
 	});
 
-	const parsedRow = mapAppwriteRow(row);
+	const row = response.rows[0];
+	if (!row) throw new Error(`TSR not found: ${tsrNumber}`);
 
-	// Parse strings back to objects for the frontend
-	const result: TSR = parsePayload(parsedRow, jsonFields);
-	return result;
+	return parsePayload(mapAppwriteRow(row), jsonFields);
 }
 
 // Get All TSRs

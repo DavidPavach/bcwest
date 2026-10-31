@@ -165,7 +165,10 @@ const TSR = ({ tsr }: { tsr: TSR }) => {
 						data={tsr.depositor}
 					/>
 
-					<KeyValueBlock title="Terminal Details" data={tsr.terminalDetails} />
+					<KeyValueBlock
+						title="Tank Farm / Storage Facility Details"
+						data={tsr.terminalDetails}
+					/>
 				</div>
 
 				{/* Product Info + Inventory Position */}
