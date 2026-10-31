@@ -51,7 +51,7 @@ export default function TankDetails({
 										"Tank No.",
 										"GPS Coordinates",
 										"Product",
-										"Capacity (MT)",
+										"Capacity (M³)",
 										"Ullage (M³)",
 									].map((header, index) => (
 										<th
