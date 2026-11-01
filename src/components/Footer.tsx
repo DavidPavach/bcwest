@@ -70,10 +70,10 @@ export default function Footer() {
 							<div className="flex items-center gap-3">
 								<Mobile className="size-3 md:size-3.5 xl:size-4 text-gold shrink-0" />
 								<a
-									href="tel:+1 (581) 662-9646"
+									href="tel:+1 (431) 305-5598"
 									className="font-mono text-[10px] text-foreground/60 md:text-[11px] hover:text-gold xl:text-xs transition-colors"
 								>
-									+1 (581) 662-9646
+									+1 (431) 305-5598
 								</a>
 							</div>
 							<div className="flex items-center gap-3">
@@ -85,14 +85,8 @@ export default function Footer() {
 									info@bcwestterminal.ca
 								</a>
 							</div>
-							<div className="flex items-center gap-x-5 mt-4">
+							<div className="mt-4">
 								<ThemeToggle />
-								<div className="flex items-center gap-x-2 text-muted-foreground">
-									<a href="https://wa.me/message/YSCNI74HRUYAN1" target="_blank" rel="noopener noreferrer">
-										<Whatsapp className="size-4 md:size-4.5 xl:size-5 text-[#25D366]" variant="Bold" />
-									</a>
-									<p className="text-[10px] md:text-[11px] xl:text-xs">+1 (587) 882-9321</p>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -141,7 +135,8 @@ export default function Footer() {
 							discuss your transportation and logistics requirements.
 						</p>
 						<Link
-							to="/verification" search={{ verify: undefined, number: undefined }}
+							to="/verification"
+							search={{ verify: undefined, value: undefined }}
 							className="group inline-flex justify-center items-center gap-2 bg-gold hover:bg-gold/90 px-5 py-3 w-full font-semibold text-[11px] md:text-xs xl:text-sm tracking-wide transition-all duration-200 cursor-pointer"
 						>
 							Request a Quote

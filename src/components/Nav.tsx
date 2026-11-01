@@ -66,10 +66,11 @@ export default function Navbar() {
 				initial={{ y: -100, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
 				transition={{ duration: 0.6, ease: "easeOut" }}
-				className={`fixed top-0 left-0 right-0 z-10 transition-all duration-500 ${scrolled
-					? "bg-background/95 backdrop-blur-md border-b border-border/50 shadow-ocean"
-					: "bg-transparent"
-					}`}
+				className={`fixed top-0 left-0 right-0 z-10 transition-all duration-500 ${
+					scrolled
+						? "bg-background/95 backdrop-blur-md border-b border-border/50 shadow-ocean"
+						: "bg-transparent"
+				}`}
 			>
 				<div className="mx-auto px-4 md:px-6 lg:px-8 xl:px-10 max-w-screen-2xl">
 					<div className="flex justify-between items-center h-18 lg:h-20">
@@ -115,10 +116,11 @@ export default function Navbar() {
 								>
 									<Link
 										to={link.href}
-										className={`flex items-center gap-1 px-3 py-2 text-xs xl:text-sm font-medium tracking-wide transition-colors duration-200 ${isActive(link.href)
-											? "text-gold"
-											: `hover:text-gold ${scrolled ? "text-foreground" : "text-ivory"}`
-											}`}
+										className={`flex items-center gap-1 px-3 py-2 text-xs xl:text-sm font-medium tracking-wide transition-colors duration-200 ${
+											isActive(link.href)
+												? "text-gold"
+												: `hover:text-gold ${scrolled ? "text-foreground" : "text-ivory"}`
+										}`}
 									>
 										{link.label}
 										{link.children && (
@@ -146,10 +148,11 @@ export default function Navbar() {
 														<Link
 															key={child.label}
 															to={child.href}
-															className={`flex items-center px-5 py-2.5 text-xs xl:text-sm transition-colors duration-150 border-l-2 ${isActive(child.href)
-																? "border-gold text-gold bg-gold/5"
-																: "border-transparent text-fog/70 hover:text-ivory hover:border-gold/50 hover:bg-border/30"
-																}`}
+															className={`flex items-center px-5 py-2.5 text-xs xl:text-sm transition-colors duration-150 border-l-2 ${
+																isActive(child.href)
+																	? "border-gold text-gold bg-gold/5"
+																	: "border-transparent text-fog/70 hover:text-ivory hover:border-gold/50 hover:bg-border/30"
+															}`}
 														>
 															{child.label}
 														</Link>
@@ -165,13 +168,15 @@ export default function Navbar() {
 						{/* Desktop CTA */}
 						<div className="hidden lg:flex items-center gap-4">
 							<a
-								href="tel:+1 (581) 662-9646"
+								href="tel:+1 (431) 305-5598"
 								className={`flex items-center gap-2 font-mono text-xs xl:text-sm transition-colors ${scrolled ? "text-foreground" : "text-fog/70 hover:text-gold"}`}
 							>
 								<Mobile className="size-3 md:size-3.5 xl:size-4" />
-								+1 (581) 662-9646
+								+1 (431) 305-5598
 							</a>
-							<Link to="/verification" search={{ verify: undefined, number: undefined }}
+							<Link
+								to="/verification"
+								search={{ verify: undefined, value: undefined }}
 								className="bg-gold hover:bg-gold/90 hover:shadow-gold px-5 py-2.5 font-semibold text-sm tracking-wide transition-all duration-200 cursor-pointer"
 							>
 								Request Quote
@@ -211,10 +216,9 @@ export default function Navbar() {
 									<div key={link.label}>
 										<Link
 											to={link.href}
-											className={`block py-4 font-heading text-xl md:text-2xl font-bold uppercase tracking-wide border-b border-border/30 transition-colors ${isActive(link.href)
-												? "text-gold"
-												: "hover:text-gold"
-												}`}
+											className={`block py-4 font-heading text-xl md:text-2xl font-bold uppercase tracking-wide border-b border-border/30 transition-colors ${
+												isActive(link.href) ? "text-gold" : "hover:text-gold"
+											}`}
 										>
 											{link.label}
 										</Link>
@@ -236,13 +240,14 @@ export default function Navbar() {
 							</div>
 							<div className="space-y-4">
 								<a
-									href="tel:+1 (581) 662-9646"
+									href="tel:+1 (431) 305-5598"
 									className="flex items-center gap-2 font-mono text-foreground/70 text-xs md:text-sm"
 								>
-									<Mobile className="size-4" /> +1 (581) 662-9646
+									<Mobile className="size-4" /> +1 (431) 305-5598
 								</a>
 								<Link
-									to="/verification" search={{ verify: undefined, number: undefined }}
+									to="/verification"
+									search={{ verify: undefined, number: undefined }}
 									className="block bg-gold py-4 w-full font-heading font-bold text-base md:text-lg text-center uppercase tracking-wider cursor-pointer"
 								>
 									Request a Quote
